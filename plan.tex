@@ -27,8 +27,12 @@
 \usepackage{amssymb}  % assumes amsmath package installed
 \usepackage{fancyhdr}
 \setlength{\headheight}{15.2pt}
+\usepackage[]{algorithm2e}
 
 \newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{defi}{Definition}
+\newtheorem{prop}{Proposition}
 
 \title{\LARGE \bf
 %modif
@@ -62,23 +66,11 @@ On the list coloring of 1-band buffering cellular graphs
 \maketitle
 \thispagestyle{fancy}
 \fancyhf{}
-\chead{II2202, Fall 2017, Period 1-2 | Project plan | \today}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Allocation of responsibilities}
-
-Benjámin Seregi is responsible for building up the theory of list coloring in $1$-band buffering cellular graphs, writing the pseudocode of the algorithms, verifying the hypotheses, prove the algorithms' correctness and their running time.
-
-Marine Collery is responsible for implementing the algorithms in a high-level programming language, creating test cases to compare our solution with the existing ones. She is also responsible for presenting our final project.
+\chead{KTH Royal Institute of Technology | II2202, Fall 2017, Period 1-2 | \today}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Organization}
-
-The project will be organized as a two-person project planned to last for 5 months.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Background}
+\section{Introduction}
 %Describe the background for chosen area that is going to be investigated. Write a short description of the area that is going to be %investigated. It is a brief description of the necessary background knowledge of the problem area and for carrying out the project.
 
 In telecommunication one of the most challenging problems is the efficient allocation of the available frequency. Since the available bandwidth is always limited (and expensive), the efficient utilization of the frequency spectrum is a major concern. Due to the fastest growing number of mobile Internet users, the optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
@@ -91,103 +83,85 @@ The authors of \cite{7248845} introduced a \textit{distinctly different} CAP fro
 
 In what follows, we formulate the same problem in $1$-band buffering systems, then we outline a possibly polynomial time algorithm that optimally solves the list coloring problem in cellular graphs.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Problem statement}
-%Describe the problem(s) that have been found in the area described in the background. Describe the problem area (in detail).
+\section{Don't know}
 
-Before we state the problem it is necessary to introduce some definitions. A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
-A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
-Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$. The \textit{choice number} of $G$ is the smallest $k \in \mathbb{N}$ (notated by $ch(G)$) such that $G$ is $k$-choosable.
+\begin{lem}\label{lem:degree-constraint}
+Let $G$ be a cellular graph. Then $G$ has a node $v$ such that $\deg(v) \leq 3$.
+\end{lem}
 
-\textit{Problem statement.} Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find the $k$-list coloring of $G$ where $3 < k \leqslant 6$ in polynomial time of the size (edges, nodes) of $G$.
+\begin{proof} Let us consider the planar drawing of the graph $G$ which corresponds to its hexagonal topology.
+Let $v$ be any node of $G$ and we assign $(0,0)$ to this node. We assign coordinates to every node starting from node $v$ in the following way. If a node $w$ is to the north of node $v$ then the coordinates of node $w$ is equal to the coordinates of node $v$ plus $(0,1)$. We summarize this method in Table \ref{table:assignment} according to the cardinal directions.
+\begin{table}[!h]
+\centering
+ \begin{tabular}{||c|c||} 
+ \hline
+ Direction & Change  \\ [0.5ex] 
+ \hline\hline
+ N & $(0,1)$  \\ 
+ \hline
+ NE & $(1,1)$ \\
+ \hline
+ SE & $(1,0)$ \\
+ \hline
+ S & $(0,-1)$ \\
+ \hline
+ SW & $(-1,-1)$ \\
+ \hline
+ NW & $(-1,0)$ \\
+ \hline
+ \end{tabular}
+  \caption{Rules of the hexagonal coordinate system}\label{table:assignment}
+\end{table}
+By applying this method to every node, we get a coordinate system within our hexagonal topology. Since there are finitely many node in $V(G)$, we can select the maximal node by selecting the node with maximal $x$- and $y$-coordinate, that is, a node $w$ with the following property: if $(x_1,y_1)$ is the coordinates of $w$ and $v \neq w$ is another node with the coordinates $(x_2,y_2)$ then $x_1 \geqslant x_2$ and $y_1 > y_2$ are satisfied.
 
-The inequality "$3 < k \leqslant 6$" requires further explanation. Since Thomassen proved that every planar graph (a cellular graph is trivially planar) is $5$-choosable \cite{Thomassen:1994:PG:184180.184192} and we have $\Delta(G)=6$ it is obvious that only $k \leqslant 6$ makes sense (with a trivial greedy algorithm $(\Delta(G)+1)$-list coloring can be constructed). Moreover, in \cite{662943} it has been proved that $\chi(G)=3$. Since $\chi(G) \leqslant ch(G)$ (trivially for all graphs) the necessity of the inequality is partially justified (the reason of the strict inequality will be explained in Hypothesis section).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Problem}
+To obtain a contradiction, suppose that the maximal node $w$ has more than 3 neighbors. It follows then at least one if its neighbors is either to the north, northeast or southeast to $w$. However, this neighbor would violate the maximality of $w$. Therefore we proved that $\deg(w) \leq 3$.
+\end{proof}
+\begin{defi}
+We say that the orientation of a digraph $G$ is $k$\textit{-bounded} if for each node $v \in V(G)$ its outdegree is bounded by $k$, that is, $\deg^+(v) \leqslant k$.
+\end{defi}
+\begin{lem}\label{lem:bounded-acyclic-orientation}
+If $G$ is a cellular graph, then $G$ has a $3$-bounded acyclic orientation.
+\end{lem}
+\begin{proof} Since $G=(V,E)$ is a cellular graph, we can make use of Lemma \ref{lem:degree-constraint}, that is, let $v$ be a node of $G^{(0)}:=G$ with $\deg(v) \leq 3$. We construct a function $f\colon V(G) \to \mathbb{N}$ by setting $f(v) := 0$ and then remove the node $v$ from $G^{(0)}$ yielding the graph $G^{(1)}$. By repeating the same procedure - at step $i$th - we select a node $v$ in $G^{(i)}$ such that $\deg(v) \leqslant 3$ and we set $f(v):=i$. Then we remove $v$ from $G^{(i)}$ which yields the graph $V(G^{(i+1)}) := V(G^{(i)}) \setminus \lbrace v \rbrace$. It is trivial that the graphs $G^{(1)},\ldots,G^{(|V(G)|)}$ are all cellular therefore it was valid using Lemma \ref{lem:degree-constraint}.
 
-%State a clear and concise problem that is going to be investigated.  Answer the question What is the real problem? - What is the problem or %value proposition addressed by the project? – Ideally one sentence that is very concrete.
+We note that the procedure ends after $|V(G)|$ steps.
 
-Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $2 < d^+(v) \leqslant 5$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$. Construct a polynomial time algorithm that finds a kernel graph in $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Hypothesis}
-% Answer the question: What is your hypothesis? (Note that the hypothesis must be measurable to be confirmed or falsified.
-
-Our hypothesis is that it is possible to construct a polynomial time algorithm that can find a $k$-list coloring of $G$ ($G$ and $k$ are as above) The hypothesis is based on the following theorems and conjectures.
-
-The following theorem \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) will play a central role in our algorithm.
-
-\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets.
-
-The inequality "$d^+(v) < |L(v)|$" explains the inequality "$3 < k \leqslant 6$" in Problem statement section ($d^+(v) = 2$ cannot always be achieved in a cellular graph therefore using this theorem we cannot prove that it is $3$-choosable).
-
-The proof of this theorem can be transformed into a polynomial time algorithm that solves the list coloring problem by assuming the following hypotheses:
-
+Now we construct a digraph $H=(V,A)$ from $G$ using the function $f$. Let $(u,v) \in E$ be an arbitrary edge. If $f(u) < f(v)$ then $A:=A\cup (u,v)$ otherwise $A:=A \cup (v,u)$. By repeating this procedure for all edges in $E$ we get an orientation of $G$, that is, the digraph $H$. We need to prove that $H$ is
 \begin{enumerate}
-\item It is possible to find such an orientation that is defined in Problem section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal}. Moreover, we want to keep the maximum indegree low because of Theorem \ref{thm:galvin}.
-\item In cycle-free directed graphs (DAG), it is possible to find (refer to Problem section) a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
+\item acyclic and
+\item $\deg^+(v) \leqslant 3$ holds for all $v \in V(G)$.
 \end{enumerate}
-\end{thm}
+To prove (1), we will obtain a contradiction by assuming that $H$ contains a directed cycle. Let $C$ be a directed cycle in $H$ with the nodes $C:=\lbrace v_1,v_2,\ldots,v_k \rbrace$ that are ordered such that $(v_i,v_{i+1 \bmod{k}}) \in E$ $(i=1,2,\ldots,k)$ which means that $f(v_1) < f(v_2) < \ldots < f(v_{k-1}) < f(v_k)$ but also $f(v_k) < f(v_1)$ which is impossible.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Purpose}
-%Explain the purpose(s) of your project / investigation (the expected deliverables from the project). Answer the question: Why do this project? (purpose/effect, i.e. – the purpose can be to save environment but the goal is to build a robot that can pick up trash.) Why would you carry out the project?
+What is left to show is that $\deg^+(v) \leqslant 3$. At each step we select a node with no more than $3$ neighbors and those neighbors will be assigned a number that is greater than $f(v)$. Therefore the outdegree of $v$ cannot be larger than $3$.
+\end{proof}
 
-The purpose is to reduce the interference in $1$-band buffering cellular graphs and therefore achieve higher network throughput. To be more specific, it can be used to reduce the interference in 802.11 wireless systems where each access point has a list of free channels.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Goal(s)}
-
-% Explain the goal(s), objective(s), and/or the result(s) of your investigation. What are the expected deliverables/outcomes from the project?
-
-The goal is to implement a polynomial time algorithm that computes interference free channel assignments in $1$-band buffering cellular graphs.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Tasks}
-
-%Describe the tasks and sub tasks that are necessary to complete the work. Grouped into a work breakdown structure.
-
-\subsection*{Benjamin | theory}
-
-\begin{enumerate}
-\item Introduce advanced graph theoretic terminology like kernel-perfect graph. Introduce cellular graphs, discuss some current results and their impact on our project.
-\item Describe how this theory relates to telecommunication systems, current technologies, mention real world applications.
-\item Prove the hypotheses:
-\begin{enumerate}
-\item The required orientation of the graph exists and can be computed in polynomial time.
-\item There exists a kernel in the graph and can be computed in polynomial time.
-\end{enumerate}
-\item Construct the algorithm (pseudo code).
-\item Conjectures, possible generalizations ($k$-band buffering systems).
-\end{enumerate}
-
-\subsection*{Marine | implementation}
-\begin{enumerate}
-\item Implement the algorithms in a high-level programming language:
-\begin{enumerate}
-\item Test, debug and measure its performance (CPU time and memory usage).
-\item Optimizations: smarter data structure: representation of the graphs (how take advantage of its special geometry?).
-\end{enumerate}
-\item Implement cellular graph generation software to create test scenarios.
-\item Implement the ILP version of $k$-list coloring to compare it with our algorithm.
-\end{enumerate}
-
-This project will be concluded by a final report and seminar.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Method}
-
-% Describe and explain the research methods that will be used for the project. What research method (or methods) will be used? 
-% Argue: why this is the most appropriate method or methods.
-
-Our method is analytical since the $1$-band buffering cellular topology can be easily modeled as a graph. In order to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible topologies that might arise in network deployments.  
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Milestone chart (time schedule)}
-
-Our project is divided in two dependent parts as described in the Tasks sections.
-Our time scheduling [Appendix 1] is organized around those.
-
+It is easy to see that the proof of this lemma can be transformed into a polynomial time algorithm. In what follows we outline the algorithm that is based on the proof of Lemma \ref{lem:bounded-acyclic-orientation} and then we prove that its running time is $O(|V(G)| + |E(G)|)$:
+\begin{algorithm}\label{alg:find-acyclic-bounded-orientation}
+ \KwData{A cellular graph $G = (V,E)$}
+ \KwResult{An acyclic $3$-bounded orientation of $G$}
+ $G^{(0)} := G$\;
+ Initialize $f \colon V(G) \to \mathbb{N}$\;
+ \For{$i\leftarrow 0$ \KwTo $|V(G)|-1$}{
+  Select $v \in V(G)$ such that $\deg(v) \leqslant 3$\;
+  $f(v):=i$\;
+  $V(G^{(i+1)}):=V(G^{i}) \setminus \lbrace v \rbrace$\;
+ }
+ Initialize $H:=(V,A)$\;
+ \ForAll{$e = (u,v) \in E(G)$}{
+   \eIf{$f(u) < f(v)$} {
+   	$A := A \cup (u,v)$\;
+   }{
+   $A := A \cup (v,u)$\;
+   }   
+ }
+ \caption{Constructing an acyclic $3$-bounded orientation of a cellular graph}
+\end{algorithm}
+\begin{prop} Algorithm \ref{alg:find-acyclic-bounded-orientation} has a running time of $O(|V(G)| + |E(G)|)$.
+\end{prop}
+\begin{proof}
+It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
+\end{proof}
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
