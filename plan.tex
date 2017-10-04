@@ -165,6 +165,31 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
 \begin{proof}
 It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
 \end{proof}
+
+
+\section{Research Methodology}
+\subsubsection*{Research methods: theory and implementation}
+For the theoretical part, the method is analytical since the 1-band buffering cellular topology can be easily modeled as a graph. In order
+to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible
+topologies that might arise in network deployments. For the implementation part\---where we compare our solution with existing solution(s)\---is empirical, that is, we compare different implementations using randomly generated topologies by measuring key resource metrics like CPU time or memory usage. The reason of carrying out experiments is twofold: (1) it is a way to test (not prove!) the correctness of the proofs, (2) the problem that the paper addresses is an engineering problem, that is, it is very important to provide key information on how the proposed algorithms would possibly perform in real-world scenarios.
+
+In what follows we explain how we are conducting our research and how we are going to ensure that our research is ethical and reproducible.
+\subsubsection*{Rules, ethics and reproducibility}
+During the research we are going to maintain a repository on GitHub. The authors\---Marine Collery and Benjámin Seregi\---are responsible for maintaining this repository that is available at \url{https://github.com/Benmartin92/research-kth}. It is a public space as we believe that being open-source is a good way to make a research \textit{reproducible}.
+
+The repository contains different branches each of them is related to a particular task in our research:
+\begin{itemize}
+\item research-plan (group)
+\item final-report-theory (Benjámin Seregi)
+\item final-report-implementation (Marine Collery)
+\item \textit{additional tasks that are not related to our research: e.g. peer-review} (group)
+\end{itemize}
+The authors inside the parenthesis are responsible for the particular branch. The repository \textit{research-plan} is the working repository for this document. Theory (\textit{final-report-theory}) and implementation (\textit{final-report-theory}) reflect to the responsibilities that are already documented in our research proposal (IX. Tasks).
+A branch must contain individual contributions from its author. The authors are responsible to publish all of their work in the form of commits. The commit messages should be descriptive and informative and if it is necessary credit the source of the feedback that the particular patch is based on e.g. \textit{"Initial value of variable $x$ has been changed to $\pi$ (feedback from Prof X.Y.)"}
+Since \textit{final-report-implementation} is going to contain the source code of our implementation, the reproducibility is guaranteed.
+
+On the ethics part, documenting our progress is of great importance. This way, we ensure that the team members pulling their weight in the research therefore we avoid ethical issues like crediting authorship.
+
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
