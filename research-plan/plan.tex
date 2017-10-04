@@ -87,6 +87,43 @@ The authors of \cite{7248845} introduced a \textit{distinctly different} CAP fro
 
 In what follows, we formulate the same problem in $1$-band buffering systems, then we outline a possibly polynomial time algorithm that optimally solves the list coloring problem in cellular graphs.
 
+\section{Problem statement}
+%Describe the problem(s) that have been found in the area described in the background. Describe the problem area (in detail).
+
+Before we state the problem it is necessary to introduce some definitions. A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
+A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
+Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$. The \textit{choice number} of $G$ is the smallest $k \in \mathbb{N}$ (notated by $ch(G)$) such that $G$ is $k$-choosable.
+
+\textit{Problem statement.} Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find the $k$-list coloring of $G$ where $3 < k \leqslant 6$ in polynomial time of the size (edges, nodes) of $G$.
+
+The inequality "$3 < k \leqslant 6$" requires further explanation. Since Thomassen proved that every planar graph (a cellular graph is trivially planar) is $5$-choosable \cite{Thomassen:1994:PG:184180.184192} and we have $\Delta(G)=6$ it is obvious that only $k \leqslant 6$ makes sense (with a trivial greedy algorithm $(\Delta(G)+1)$-list coloring can be constructed). Moreover, in \cite{662943} it has been proved that $\chi(G)=3$. Since $\chi(G) \leqslant ch(G)$ (trivially for all graphs) the necessity of the inequality is partially justified (the reason of the strict inequality will be explained in Hypothesis section).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Problem}
+
+%State a clear and concise problem that is going to be investigated.  Answer the question What is the real problem? - What is the problem or %value proposition addressed by the project? – Ideally one sentence that is very concrete.
+
+Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $2 < d^+(v) \leqslant 5$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$. Construct a polynomial time algorithm that finds a kernel graph in $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hypothesis}
+% Answer the question: What is your hypothesis? (Note that the hypothesis must be measurable to be confirmed or falsified.
+
+Our hypothesis is that it is possible to construct a polynomial time algorithm that can find a $k$-list coloring of $G$ ($G$ and $k$ are as above) The hypothesis is based on the following theorems and conjectures.
+
+The following theorem \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) will play a central role in our algorithm.
+
+\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets.
+
+The inequality "$d^+(v) < |L(v)|$" explains the inequality "$3 < k \leqslant 6$" in Problem statement section ($d^+(v) = 2$ cannot always be achieved in a cellular graph therefore using this theorem we cannot prove that it is $3$-choosable).
+
+The proof of this theorem can be transformed into a polynomial time algorithm that solves the list coloring problem by assuming the following hypotheses:
+
+\begin{enumerate}
+\item It is possible to find such an orientation that is defined in Problem section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal}. Moreover, we want to keep the maximum indegree low because of Theorem \ref{thm:galvin}.
+\item In cycle-free directed graphs (DAG), it is possible to find (refer to Problem section) a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
+\end{enumerate}
+\end{thm}
+
 \section{Don't know}
 
 \begin{lem}\label{lem:degree-constraint}
