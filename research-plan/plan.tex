@@ -162,7 +162,7 @@ On the ethics part, documenting our progress is of great importance. This way, w
 \section{Risks}
 In our research everything that is in the Hypothesis part is risk. In order to implement a polynomial time algorithm that solves our research problem we need to verify both hypotheses. Another source of risk can be the implementation of the proposed algorithms as the software development process can be delayed by some unforeseen implementation issues.
 
-However, we would like to note that Hypothesis 1 has already been eliminated by Lemma \ref{lem:bounded-acyclic-orientation}. In addition, by using Lemma \ref{lem:bounded-acyclic-orientation} we can prove that of $G$ is a cellular graph then $ch(G) \leqslant 4$. This is important since from Thomassen theorem \cite{Thomassen:1994:PG:184180.184192} we only knew that $ch(G) \leqslant 5$ (since $G$ is planar).
+However, we would like to note that Hypothesis 1 has already been eliminated by Lemma \ref{lem:bounded-acyclic-orientation}. In addition, by using Lemma \ref{lem:bounded-acyclic-orientation} we proved that if $G$ is a cellular graph then $ch(G) \leqslant 4$ (Theorem \ref{thm:choice-number}). This is important since from Thomassen theorem \cite{Thomassen:1994:PG:184180.184192} we only knew that $ch(G) \leqslant 5$ (since $G$ is planar).
 
 \appendices
 
@@ -247,6 +247,15 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
 It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
 \end{proof}
 It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
+
+\section{Choice number of cellular graphs}
+
+\begin{thm}\label{thm:choice-number}
+If $G$ is a cellular graph then $ch(G) \leqslant 4$.
+\end{thm}
+\begin{proof}
+Since $G$ is cellular, we can consider its $3$-bounded acyclic orientation by Lemma \ref{lem:bounded-acyclic-orientation}. This orientation is kernel-perfect by Richardson's theorem \cite{richardson1946}. Therefore we can apply Theorem \ref{thm:galvin} (with $d^+(v) \leqslant 3$ and $L(v)=4$) which concludes the proof.
+\end{proof}
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
