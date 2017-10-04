@@ -1,0 +1,202 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
+                                                          % if you need a4paper
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
+                                                          % paper
+
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+                                                          \usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
+\overrideIEEEmargins
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{fancyhdr}
+\setlength{\headheight}{15.2pt}
+
+\newtheorem{thm}{Theorem}
+
+\title{\LARGE \bf
+%modif
+On the list coloring of 1-band buffering cellular graphs
+}
+
+%\author{ \parbox{3 in}{\centering Huibert Kwakernaak*
+%         \thanks{*Use the $\backslash$thanks command to put information here}\\
+%         Faculty of Electrical Engineering, Mathematics and Computer Science\\
+%         University of Twente\\
+%         7500 AE Enschede, The Netherlands\\
+%         {\tt\small h.kwakernaak@autsubmit.com}}
+%         \hspace*{ 0.5 in}
+%         \parbox{3 in}{ \centering Pradeep Misra**
+%         \thanks{**The footnote marks may be inserted manually}\\
+%        Department of Electrical Engineering \\
+%         Wright State University\\
+%         Dayton, OH 45435, USA\\
+%         {\tt\small pmisra@cs.wright.edu}}
+%}
+
+\author{Marine Collery$^{1}$ and Benjámin Martin Seregi$^{2}$% <-this % stops a space
+% \thanks{*This work was not supported by any organization}% <-this % stops a space
+\thanks{$^{1}$ student of Research Methodology and Scientific Writing Course at KTH Kista P1P22017. e-mail: collery@kth.se}%
+\thanks{$^{2}$ student of Research Methodology and Scientific Writing Course at KTH Kista P1P22017. e-mail: seregi@kth.se}%
+}
+
+\begin{document}
+
+
+\maketitle
+\thispagestyle{fancy}
+\fancyhf{}
+\chead{II2202, Fall 2017, Period 1-2 | Project plan | \today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Allocation of responsibilities}
+
+Benjámin Seregi is responsible for building up the theory of list coloring in $1$-band buffering cellular graphs, writing the pseudocode of the algorithms, verifying the hypotheses, prove the algorithms' correctness and their running time.
+
+Marine Collery is responsible for implementing the algorithms in a high-level programming language, creating test cases to compare our solution with the existing ones. She is also responsible for presenting our final project.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Organization}
+
+The project will be organized as a two-person project planned to last for 5 months.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Background}
+%Describe the background for chosen area that is going to be investigated. Write a short description of the area that is going to be %investigated. It is a brief description of the necessary background knowledge of the problem area and for carrying out the project.
+
+In telecommunication one of the most challenging problems is the efficient allocation of the available frequency. Since the available bandwidth is always limited (and expensive), the efficient utilization of the frequency spectrum is a major concern. Due to the fastest growing number of mobile Internet users, the optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
+
+Several variants of the channel allocation problem (CAP) have been defined based on the different channel constraints that a particular service might require. One of them is the so-called co-channel constraint where the same channel is not allowed to be assigned to neighboring cells simultaneously. This problem have been formalized as a graph coloring problem by many authors \cite{1456167}. Unfortunately, graph coloring is a well-known NP-complete problem \cite{Kar72} and therefore we do not know if a polynomial time algorithm for co-channel constraint satisfaction exists. Therefore various heuristic algorithms have been developed, the list of methods includes genetic algorithms, neural networks, graph-based and other approaches as well \cite{Audhya:2011:SCA:1988563.1988571}.
+
+Cellular network topologies usually admit certain geometric structure. The most common network topology is the hexagonal grid topology where each cell is represented by a regular hexagon (two cells are neighbors if they share a common boundary). In \cite{662943}, the authors exploited this special structure and proposed an algorithm that optimally solves the CAP in $k$-band buffering systems where $k=1,2$. Moreover, the algorithm has polynomial running time $O(p)$ where $p$ is the number of cells.
+
+The authors of \cite{7248845} introduced a \textit{distinctly different} CAP from all the above mentioned problems. Assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called cellular graph) where each cell has a fixed number of frequency channel (channels are either busy or free), they asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is the integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
+
+In what follows, we formulate the same problem in $1$-band buffering systems, then we outline a possibly polynomial time algorithm that optimally solves the list coloring problem in cellular graphs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Problem statement}
+%Describe the problem(s) that have been found in the area described in the background. Describe the problem area (in detail).
+
+Before we state the problem it is necessary to introduce some definitions. A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
+A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
+Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$. The \textit{choice number} of $G$ is the smallest $k \in \mathbb{N}$ (notated by $ch(G)$) such that $G$ is $k$-choosable.
+
+\textit{Problem statement.} Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find the $k$-list coloring of $G$ where $3 < k \leqslant 6$ in polynomial time of the size (edges, nodes) of $G$.
+
+The inequality "$3 < k \leqslant 6$" requires further explanation. Since Thomassen proved that every planar graph (a cellular graph is trivially planar) is $5$-choosable \cite{Thomassen:1994:PG:184180.184192} and we have $\Delta(G)=6$ it is obvious that only $k \leqslant 6$ makes sense (with a trivial greedy algorithm $(\Delta(G)+1)$-list coloring can be constructed). Moreover, in \cite{662943} it has been proved that $\chi(G)=3$. Since $\chi(G) \leqslant ch(G)$ (trivially for all graphs) the necessity of the inequality is partially justified (the reason of the strict inequality will be explained in Hypothesis section).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Problem}
+
+%State a clear and concise problem that is going to be investigated.  Answer the question What is the real problem? - What is the problem or %value proposition addressed by the project? – Ideally one sentence that is very concrete.
+
+Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $2 < d^+(v) \leqslant 5$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$. Construct a polynomial time algorithm that finds a kernel graph in $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hypothesis}
+% Answer the question: What is your hypothesis? (Note that the hypothesis must be measurable to be confirmed or falsified.
+
+Our hypothesis is that it is possible to construct a polynomial time algorithm that can find a $k$-list coloring of $G$ ($G$ and $k$ are as above) The hypothesis is based on the following theorems and conjectures.
+
+The following theorem \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) will play a central role in our algorithm.
+
+\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets.
+
+The inequality "$d^+(v) < |L(v)|$" explains the inequality "$3 < k \leqslant 6$" in Problem statement section ($d^+(v) = 2$ cannot always be achieved in a cellular graph therefore using this theorem we cannot prove that it is $3$-choosable).
+
+The proof of this theorem can be transformed into a polynomial time algorithm that solves the list coloring problem by assuming the following hypotheses:
+
+\begin{enumerate}
+\item It is possible to find such an orientation that is defined in Problem section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal}. Moreover, we want to keep the maximum indegree low because of Theorem \ref{thm:galvin}.
+\item In cycle-free directed graphs (DAG), it is possible to find (refer to Problem section) a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
+\end{enumerate}
+\end{thm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Purpose}
+%Explain the purpose(s) of your project / investigation (the expected deliverables from the project). Answer the question: Why do this project? (purpose/effect, i.e. – the purpose can be to save environment but the goal is to build a robot that can pick up trash.) Why would you carry out the project?
+
+The purpose is to reduce the interference in $1$-band buffering cellular graphs and therefore achieve higher network throughput. To be more specific, it can be used to reduce the interference in 802.11 wireless systems where each access point has a list of free channels.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Goal(s)}
+
+% Explain the goal(s), objective(s), and/or the result(s) of your investigation. What are the expected deliverables/outcomes from the project?
+
+The goal is to implement a polynomial time algorithm that computes interference free channel assignments in $1$-band buffering cellular graphs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Tasks}
+
+%Describe the tasks and sub tasks that are necessary to complete the work. Grouped into a work breakdown structure.
+
+\subsection*{Benjamin | theory}
+
+\begin{enumerate}
+\item Introduce advanced graph theoretic terminology like kernel-perfect graph. Introduce cellular graphs, discuss some current results and their impact on our project.
+\item Describe how this theory relates to telecommunication systems, current technologies, mention real world applications.
+\item Prove the hypotheses:
+\begin{enumerate}
+\item The required orientation of the graph exists and can be computed in polynomial time.
+\item There exists a kernel in the graph and can be computed in polynomial time.
+\end{enumerate}
+\item Construct the algorithm (pseudo code).
+\item Conjectures, possible generalizations ($k$-band buffering systems).
+\end{enumerate}
+
+\subsection*{Marine | implementation}
+\begin{enumerate}
+\item Implement the algorithms in a high-level programming language:
+\begin{enumerate}
+\item Test, debug and measure its performance (CPU time and memory usage).
+\item Optimizations: smarter data structure: representation of the graphs (how take advantage of its special geometry?).
+\end{enumerate}
+\item Implement cellular graph generation software to create test scenarios.
+\item Implement the ILP version of $k$-list coloring to compare it with our algorithm.
+\end{enumerate}
+
+This project will be concluded by a final report and seminar.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Method}
+
+% Describe and explain the research methods that will be used for the project. What research method (or methods) will be used? 
+% Argue: why this is the most appropriate method or methods.
+
+Our method is analytical since the $1$-band buffering cellular topology can be easily modeled as a graph. In order to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible topologies that might arise in network deployments.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Milestone chart (time schedule)}
+
+Our project is divided in two dependent parts as described in the Tasks sections.
+Our time scheduling [Appendix 1] is organized around those.
+
+\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{IEEEtran}
+\bibliography{ref.bib}
+\end{document}
