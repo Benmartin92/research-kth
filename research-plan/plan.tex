@@ -227,7 +227,7 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
  $G^{(0)} := G$\;
  Initialize $f \colon V(G) \to \mathbb{N}$\;
  \For{$i\leftarrow 0$ \KwTo $|V(G)|-1$}{
-  Select $v \in V(G)$ such that $\deg(v) \leqslant 3$\;
+  Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3$\;
   $f(v):=i$\;
   $V(G^{(i+1)}):=V(G^{i}) \setminus \lbrace v \rbrace$\;
  }
@@ -244,7 +244,7 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
 \begin{prop} Algorithm \ref{alg:find-acyclic-bounded-orientation} has a running time of $O(|V(G)| + |E(G)|)$.
 \end{prop}
 \begin{proof}
-It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
+It is enough to prove that "Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
 \end{proof}
 It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
 
