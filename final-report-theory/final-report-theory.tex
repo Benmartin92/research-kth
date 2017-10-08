@@ -189,6 +189,7 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
 \begin{proof}
 It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
 \end{proof}
+
 It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
 \section{Cellular graphs are $4$-choosable}
 
@@ -221,7 +222,22 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
 \item for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
 \end{enumerate}
 1) If $v \in K$ then its neighbors are marked. Since we do not add marked nodes to $K$, it is always independent.
-2) 
+2) When $v$ is unmarked and we add it to $K$ all of its neighbors come after it in the topological order (otherwise $v$ would have already been marked), that is, $v$ is connected to its neighbors by forward edges.
+
+\begin{algorithm}\label{alg:find-kernel-in-dags}
+ \KwData{A directed acyclic graph $G = (V,A)$}
+ \KwResult{A kernel $K \subseteq V(G)$}
+ $T := \text{the topological order of $V(G)$}$\;
+ $K := \emptyset$\;
+ \For{$i\leftarrow 1$ \KwTo $|V(G)|$}{
+  \If{$T(i)$ is unmarked} {
+  	$K := K \cup \lbrace T(i) \rbrace$\;
+  	Mark the neighbors of $T(i)$\;
+  }
+ }
+ \caption{Finding a kernel in $G$}
+\end{algorithm}
+We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$.
 \end{proof}
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
