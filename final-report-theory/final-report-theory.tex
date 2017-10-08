@@ -207,7 +207,21 @@ If $G$ is a cellular graph then $\ch(G) \leqslant 4$.
 \begin{proof}
 Since $G$ is cellular, we can consider its $3$-bounded acyclic orientation by Lemma \ref{lem:bounded-acyclic-orientation}. This orientation is kernel-perfect by Richardson's theorem \cite{richardson1946}. Therefore we can apply Theorem \ref{thm:galvin} (with $d^+(v) \leqslant 3$ and $L(v)=4$) which concludes the proof.
 \end{proof}
+We proved that cellular graphs are $4$-choosable what is left to show is that there exists an algorithm that constructs such colorings in polynomial time.
+\section{Finding a kernel in DAGs}
 
+It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-complete \cite{chvatal}. However we will show that in DAGs (directed acyclic graphs) this problem can be easily solved in polynomial time. This is crucial as our $4$-list coloring algorithm has to construct kernels repeatedly during its running time.
+
+\begin{lem} Let $G$ be a directed acyclic graph. Then a kernel $K \subseteq V(G)$ can be found in polynomial time.
+\end{lem}
+\begin{proof} Since $G$ is acyclic we can consider the topological order of its nodes (which can be computed in polynomial time). Let $\lbrace v_1, v_2, \ldots, v_n \rbrace$ be this topological order. Let us start from node $v_1$ and add it to the kernel, that is, $K = \lbrace v_1 \rbrace$. Mark the neighbors of $v_1$. After that, we move on with the second node $v_2$, if it is marked we skip it otherwise we add it to the kernel $(K := K \cup \lbrace v_2 \rbrace)$ and mark its neighbors. Repeat this procedure with the remaining nodes. We need to prove that
+\begin{enumerate}
+\item $K$ is independent and
+\item for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
+\end{enumerate}
+1) If $v \in K$ then its neighbors are marked. Since we do not add marked nodes to $K$, it is always independent.
+2) 
+\end{proof}
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
