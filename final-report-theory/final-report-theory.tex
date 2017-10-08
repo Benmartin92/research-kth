@@ -192,6 +192,15 @@ It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded
 \section{Cellular graphs are $4$-choosable}
 
 We are about to prove one of our main results, that is, cellular graphs are $4$-choosable. We would like to note that since $G$ is a planar, it follows from Thomassen's theorem \cite{Thomassen:1994:PG:184180.184192} that it is $5$-choosable. It is worth noting that cellular graphs are $3$-colorable \cite{662943} (Theorem 1). However, even with this additional constraint, we still cannot say that if $G$ is planar and $3$-colorable then it is $4$-choosable as a counterexample can be found in \cite{JGT:JGT4}. The counterexample is quite interesting (second figure) as it is constructed from a cellular graph however, the author added one extra node and joined it to all of the outer nodes. Due to this step, the resulting graph does not always contain a node of degree $3$ therefore the property of Lemma \ref{lem:degree-constraint} is not true for this construction. This connection is interesting, however the fact that having Lemma \ref{lem:degree-constraint}'s property is equivalent to being $4$-choosable would imply $\mathrm{P} = \mathrm{NP}$ therefore we did not attempt to prove it.
+
+Before proving our theorem we need to introduce the notion of kernel in graphs and a theorem from Galvin \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) that will play a central role in our study. The proof of the theorem is inductive and can be transformed into an algorithm.
+\begin{defi} Let $G$ be a directed graph. We say that an independent set $K \subseteq V(G)$ is a kernel of $G$ if it satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
+\end{defi}
+\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets. $\blacksquare$
+\end{thm}
+We will prove this theorem later through our algorithm. 
+\begin{defi} We note that a directed graph is called kernel-perfect if all of its induced subgraphs contain a kernel.
+\end{defi}
 \begin{thm}\label{thm:choice-number}
 If $G$ is a cellular graph then $\ch(G) \leqslant 4$.
 \end{thm}
