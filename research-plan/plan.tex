@@ -28,6 +28,7 @@
 \usepackage{fancyhdr}
 \setlength{\headheight}{15.2pt}
 \usepackage[]{algorithm2e}
+\usepackage{url}
 
 \newtheorem{thm}{Theorem}
 \newtheorem{lem}{Lemma}
@@ -86,10 +87,90 @@ The authors of \cite{7248845} introduced a \textit{distinctly different} CAP fro
 
 In what follows, we formulate the same problem in $1$-band buffering systems, then we outline a possibly polynomial time algorithm that optimally solves the list coloring problem in cellular graphs.
 
-\section{Don't know}
+\section{Problem statement}
+%Describe the problem(s) that have been found in the area described in the background. Describe the problem area (in detail).
+
+Before we state the problem it is necessary to introduce some definitions. A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
+A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
+Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$. The \textit{choice number} of $G$ is the smallest $k \in \mathbb{N}$ (notated by $ch(G)$) such that $G$ is $k$-choosable.
+
+\textit{Problem statement.} Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find the $k$-list coloring of $G$ where $3 < k \leqslant 6$ in polynomial time of the size (edges, nodes) of $G$.
+
+The inequality "$3 < k \leqslant 6$" requires further explanation. Since Thomassen proved that every planar graph (a cellular graph is trivially planar) is $5$-choosable \cite{Thomassen:1994:PG:184180.184192} and we have $\Delta(G)=6$ it is obvious that only $k \leqslant 6$ makes sense (with a trivial greedy algorithm $(\Delta(G)+1)$-list coloring can be constructed). Moreover, in \cite{662943} it has been proved that $\chi(G)=3$. Since $\chi(G) \leqslant ch(G)$ (trivially for all graphs) the necessity of the inequality is partially justified (the reason of the strict inequality will be explained in Hypothesis section).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Problem}
+
+%State a clear and concise problem that is going to be investigated.  Answer the question What is the real problem? - What is the problem or %value proposition addressed by the project? – Ideally one sentence that is very concrete.
+
+Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $d^+(v) \leqslant 3$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$. Construct a polynomial time algorithm that finds a kernel graph in $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hypotheses}
+% Answer the question: What is your hypothesis? (Note that the hypothesis must be measurable to be confirmed or falsified.
+
+Our hypothesis is that it is possible to construct a polynomial time algorithm that can find a $k$-list coloring of $G$ ($G$ and $k$ are as above) The hypothesis is based on the following theorems and conjectures.
+
+The following theorem \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) will play a central role in our algorithm.
+
+\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets.
+
+The inequality "$d^+(v) < |L(v)|$" explains the inequality "$3 < k \leqslant 6$" in Problem statement section ($d^+(v) = 2$ cannot always be achieved in a cellular graph therefore using this theorem we cannot prove that it is $3$-choosable).
+
+The proof of this theorem can be transformed into a polynomial time algorithm that solves the list coloring problem by assuming the following hypotheses:
+
+\begin{enumerate}
+\item It is possible to find such an orientation that is defined in Problem section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal}. Moreover, we want to keep the maximum indegree low because of Theorem \ref{thm:galvin}.
+\item In cycle-free directed graphs (DAG), it is possible to find (refer to Problem section) a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
+\end{enumerate}
+\end{thm}
+
+\section{Purpose}
+%Explain the purpose(s) of your project / investigation (the expected deliverables from the project). Answer the question: Why do this project? (purpose/effect, i.e. – the purpose can be to save environment but the goal is to build a robot that can pick up trash.) Why would you carry out the project?
+
+The purpose of this research is to reduce the interference in $1$-band buffering cellular graphs and therefore achieve higher network throughput. To be more specific, it can be used to reduce the interference in 802.11 wireless systems where each access point has a list of free channels.
+
+\section{Goals}
+
+% Explain the goal(s), objective(s), and/or the result(s) of your investigation. What are the expected deliverables/outcomes from the project?
+
+The goal is to implement a polynomial time algorithm that computes interference free channel assignments in $1$-band buffering cellular graphs and to prove that the choice number of cellular graphs is at most $4$.
+
+\section{Research Methodology}
+\subsubsection*{Research methods: theory and implementation}
+For the theoretical part, the method is analytical since the 1-band buffering cellular topology can be easily modeled as a graph. In order
+to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible
+topologies that might arise in network deployments. For the implementation part\---where we compare our solution with existing solution(s)\---is empirical, that is, we compare different implementations using randomly generated topologies by measuring key resource metrics like CPU time or memory usage. The reason of carrying out experiments is twofold: (1) it is a way to test (not prove!) the correctness of the proofs, (2) the problem that the paper addresses is an engineering problem, that is, it is very important to provide key information on how the proposed algorithms would possibly perform in real-world scenarios.
+
+In what follows we explain how we are conducting our research and how we are going to ensure that our research is ethical and reproducible.
+\subsubsection*{Rules, ethics and reproducibility}
+During the research we are going to maintain a repository on GitHub. The authors\---Marine Collery and Benjámin Seregi\---are responsible for maintaining this repository that is available at \url{https://github.com/Benmartin92/research-kth}. It is a public space as we believe that being open-source is a good way to make a research \textit{reproducible}.
+
+The repository contains different branches each of them is related to a particular task in our research:
+\begin{itemize}
+\item research-plan (group)
+\item final-report-theory (Benjámin Seregi)
+\item final-report-implementation (Marine Collery)
+\item \textit{additional tasks that are not related to our research: e.g. peer-review} (group)
+\end{itemize}
+The authors inside the parenthesis are responsible for the particular branch. The repository \textit{research-plan} is the working repository for this document. Theory (\textit{final-report-theory}) and implementation (\textit{final-report-implementation}) reflect to the responsibilities that are already documented in our research proposal (IX. Tasks).
+A branch must contain individual contributions from its author. The authors are responsible to publish all of their work in the form of commits. The commit messages should be descriptive and informative and if it is necessary credit the source of the feedback that the particular patch is based on e.g. \textit{"Initial value of variable $x$ has been changed to $\pi$ (feedback from Prof X.Y.)"}
+Since \textit{final-report-implementation} is going to contain the source code of our implementation, the reproducibility is guaranteed.
+
+On the ethics part, documenting our progress is of great importance. This way, we ensure that the team members pulling their weight in the research therefore we avoid ethical issues like crediting authorship.
+
+
+\section{Risks}
+In our research everything that is in the Hypothesis part is risk. In order to implement a polynomial time algorithm that solves our research problem we need to verify both hypotheses. Another source of risk can be the implementation of the proposed algorithms as the software development process can be delayed by some unforeseen implementation issues.
+
+However, we would like to note that Hypothesis 1 has already been eliminated by Lemma \ref{lem:bounded-acyclic-orientation}. In addition, by using Lemma \ref{lem:bounded-acyclic-orientation} we proved that if $G$ is a cellular graph then $ch(G) \leqslant 4$ (Theorem \ref{thm:choice-number}). This is important since from Thomassen theorem \cite{Thomassen:1994:PG:184180.184192} we only knew that $ch(G) \leqslant 5$ (since $G$ is planar).
+
+\appendices
+
+\section{Hypothesis 1}
+In this appendix we prove our first hypothesis.
 
 \begin{lem}\label{lem:degree-constraint}
-Let $G$ be a cellular graph. Then $G$ has a node $v$ such that $\deg(v) \leq 3$.
+Let $G$ be a cellular graph. Then $G$ has a node $v$ such that $\deg(v) \leqslant 3$.
 \end{lem}
 
 \begin{proof} Let us consider the planar drawing of the graph $G$ which corresponds to its hexagonal topology.
@@ -117,7 +198,7 @@ Let $v$ be any node of $G$ and we assign $(0,0)$ to this node. We assign coordin
 \end{table}
 By applying this method to every node, we get a coordinate system within our hexagonal topology. Since there are finitely many node in $V(G)$, we can select the maximal node by selecting the node with maximal $x$- and $y$-coordinate, that is, a node $w$ with the following property: if $(x_1,y_1)$ is the coordinates of $w$ and $v \neq w$ is another node with the coordinates $(x_2,y_2)$ then $x_1 \geqslant x_2$ and $y_1 > y_2$ are satisfied.
 
-To obtain a contradiction, suppose that the maximal node $w$ has more than 3 neighbors. It follows then at least one if its neighbors is either to the north, northeast or southeast to $w$. However, this neighbor would violate the maximality of $w$. Therefore we proved that $\deg(w) \leq 3$.
+To obtain a contradiction, suppose that the maximal node $w$ has more than 3 neighbors. It follows then at least one if its neighbors is either to the north, northeast or southeast to $w$. However, this neighbor would violate the maximality of $w$. Therefore we proved that $\deg(w) \leqslant 3$.
 \end{proof}
 \begin{defi}
 We say that the orientation of a digraph $G$ is $k$\textit{-bounded} if for each node $v \in V(G)$ its outdegree is bounded by $k$, that is, $\deg^+(v) \leqslant k$.
@@ -125,7 +206,7 @@ We say that the orientation of a digraph $G$ is $k$\textit{-bounded} if for each
 \begin{lem}\label{lem:bounded-acyclic-orientation}
 If $G$ is a cellular graph, then $G$ has a $3$-bounded acyclic orientation.
 \end{lem}
-\begin{proof} Since $G=(V,E)$ is a cellular graph, we can make use of Lemma \ref{lem:degree-constraint}, that is, let $v$ be a node of $G^{(0)}:=G$ with $\deg(v) \leq 3$. We construct a function $f\colon V(G) \to \mathbb{N}$ by setting $f(v) := 0$ and then remove the node $v$ from $G^{(0)}$ yielding the graph $G^{(1)}$. By repeating the same procedure - at step $i$th - we select a node $v$ in $G^{(i)}$ such that $\deg(v) \leqslant 3$ and we set $f(v):=i$. Then we remove $v$ from $G^{(i)}$ which yields the graph $V(G^{(i+1)}) := V(G^{(i)}) \setminus \lbrace v \rbrace$. It is trivial that the graphs $G^{(1)},\ldots,G^{(|V(G)|)}$ are all cellular therefore it was valid using Lemma \ref{lem:degree-constraint}.
+\begin{proof} Since $G=(V,E)$ is a cellular graph, we can make use of Lemma \ref{lem:degree-constraint}, that is, let $v$ be a node of $G^{(0)}:=G$ with $\deg(v) \leqslant 3$. We construct a function $f\colon V(G) \to \mathbb{N}$ by setting $f(v) := 0$ and then remove the node $v$ from $G^{(0)}$ yielding the graph $G^{(1)}$. By repeating the same procedure - at step $i$th - we select a node $v$ in $G^{(i)}$ such that $\deg(v) \leqslant 3$ and we set $f(v):=i$. Then we remove $v$ from $G^{(i)}$ which yields the graph $V(G^{(i+1)}) := V(G^{(i)}) \setminus \lbrace v \rbrace$. It is trivial that the graphs $G^{(1)},\ldots,G^{(|V(G)|)}$ are all cellular therefore it was valid using Lemma \ref{lem:degree-constraint}.
 
 We note that the procedure ends after $|V(G)|$ steps.
 
@@ -139,14 +220,14 @@ To prove (1), we will obtain a contradiction by assuming that $H$ contains a dir
 What is left to show is that $\deg^+(v) \leqslant 3$. At each step we select a node with no more than $3$ neighbors and those neighbors will be assigned a number that is greater than $f(v)$. Therefore the outdegree of $v$ cannot be larger than $3$.
 \end{proof}
 
-It is easy to see that the proof of this lemma can be transformed into a polynomial time algorithm. In what follows we outline the algorithm that is based on the proof of Lemma \ref{lem:bounded-acyclic-orientation} and then we prove that its running time is $O(|V(G)| + |E(G)|)$:
+It is easy to see that the proof of this lemma can be transformed into a polynomial time algorithm. In what follows we outline the algorithm (Algorithm \ref{alg:find-acyclic-bounded-orientation}) that is based on the proof of Lemma \ref{lem:bounded-acyclic-orientation} and then we prove that its running time is $O(|V(G)| + |E(G)|)$.
 \begin{algorithm}\label{alg:find-acyclic-bounded-orientation}
  \KwData{A cellular graph $G = (V,E)$}
  \KwResult{An acyclic $3$-bounded orientation of $G$}
  $G^{(0)} := G$\;
  Initialize $f \colon V(G) \to \mathbb{N}$\;
  \For{$i\leftarrow 0$ \KwTo $|V(G)|-1$}{
-  Select $v \in V(G)$ such that $\deg(v) \leqslant 3$\;
+  Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3$\;
   $f(v):=i$\;
   $V(G^{(i+1)}):=V(G^{i}) \setminus \lbrace v \rbrace$\;
  }
@@ -163,32 +244,18 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
 \begin{prop} Algorithm \ref{alg:find-acyclic-bounded-orientation} has a running time of $O(|V(G)| + |E(G)|)$.
 \end{prop}
 \begin{proof}
-It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
+It is enough to prove that "Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
 \end{proof}
+It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
 
+\section{Choice number of cellular graphs}
 
-\section{Research Methodology}
-\subsubsection*{Research methods: theory and implementation}
-For the theoretical part, the method is analytical since the 1-band buffering cellular topology can be easily modeled as a graph. In order
-to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible
-topologies that might arise in network deployments. For the implementation part\---where we compare our solution with existing solution(s)\---is empirical, that is, we compare different implementations using randomly generated topologies by measuring key resource metrics like CPU time or memory usage. The reason of carrying out experiments is twofold: (1) it is a way to test (not prove!) the correctness of the proofs, (2) the problem that the paper addresses is an engineering problem, that is, it is very important to provide key information on how the proposed algorithms would possibly perform in real-world scenarios.
-
-In what follows we explain how we are conducting our research and how we are going to ensure that our research is ethical and reproducible.
-\subsubsection*{Rules, ethics and reproducibility}
-During the research we are going to maintain a repository on GitHub. The authors\---Marine Collery and Benjámin Seregi\---are responsible for maintaining this repository that is available at \url{https://github.com/Benmartin92/research-kth}. It is a public space as we believe that being open-source is a good way to make a research \textit{reproducible}.
-
-The repository contains different branches each of them is related to a particular task in our research:
-\begin{itemize}
-\item research-plan (group)
-\item final-report-theory (Benjámin Seregi)
-\item final-report-implementation (Marine Collery)
-\item \textit{additional tasks that are not related to our research: e.g. peer-review} (group)
-\end{itemize}
-The authors inside the parenthesis are responsible for the particular branch. The repository \textit{research-plan} is the working repository for this document. Theory (\textit{final-report-theory}) and implementation (\textit{final-report-implementation}) reflect to the responsibilities that are already documented in our research proposal (IX. Tasks).
-A branch must contain individual contributions from its author. The authors are responsible to publish all of their work in the form of commits. The commit messages should be descriptive and informative and if it is necessary credit the source of the feedback that the particular patch is based on e.g. \textit{"Initial value of variable $x$ has been changed to $\pi$ (feedback from Prof X.Y.)"}
-Since \textit{final-report-implementation} is going to contain the source code of our implementation, the reproducibility is guaranteed.
-
-On the ethics part, documenting our progress is of great importance. This way, we ensure that the team members pulling their weight in the research therefore we avoid ethical issues like crediting authorship.
+\begin{thm}\label{thm:choice-number}
+If $G$ is a cellular graph then $ch(G) \leqslant 4$.
+\end{thm}
+\begin{proof}
+Since $G$ is cellular, we can consider its $3$-bounded acyclic orientation by Lemma \ref{lem:bounded-acyclic-orientation}. This orientation is kernel-perfect by Richardson's theorem \cite{richardson1946}. Therefore we can apply Theorem \ref{thm:galvin} (with $d^+(v) \leqslant 3$ and $L(v)=4$) which concludes the proof.
+\end{proof}
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
