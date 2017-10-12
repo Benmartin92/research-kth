@@ -13,6 +13,8 @@
                                                           \usepackage[utf8]{inputenc}
 \usepackage[utf8]{inputenc}
 \overrideIEEEmargins
+
+
 % See the \addtolength command later in the file to balance the column lengths
 % on the last page of the document
 
@@ -29,7 +31,7 @@
 \setlength{\headheight}{15.2pt}
 \usepackage[]{algorithm2e}
 \usepackage{url}
-
+\DeclareMathOperator*{\ch}{ch}
 \newtheorem{thm}{Theorem}
 \newtheorem{lem}{Lemma}
 \newtheorem{defi}{Definition}
@@ -70,7 +72,7 @@ On the list coloring of 1-band buffering cellular graphs
 \chead{KTH Royal Institute of Technology | II2202, Fall 2017, Period 1-2 | \today}
 
 \begin{abstract}
-The optimal channel allocation problem (CAP) in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we showed that there exists a polynomial time algorithm for 1-band buffering callular graphs; and as a corollary it turned out the choice number of such a graphs is at most 4. In addition, we carried out performance comparisons between the existing integer linear programming solution and our implementation.
+The optimal channel allocation problem (CAP) in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related to the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we showed that there exists a polynomial time algorithm for 1-band buffering cellular graphs; and as a corollary it turned out the choice number of such a graph is at most 4. In addition, we carried out performance comparisons between the existing integer linear programming solution and our implementation.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,17 +94,21 @@ In what follows, we formulate the same problem in $1$-band buffering systems, th
 
 Before we state the problem it is necessary to introduce some definitions. A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
 A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
-Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$. The \textit{choice number} of $G$ is the smallest $k \in \mathbb{N}$ (notated by $ch(G)$) such that $G$ is $k$-choosable.
+Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$. The \textit{choice number} of $G$ is the smallest $k \in \mathbb{N}$ (notated by $\ch(G)$) such that $G$ is $k$-choosable.
 
-\textit{Problem statement.} Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find the $k$-list coloring of $G$ where $3 < k \leqslant 6$ in polynomial time of the size (edges, nodes) of $G$.
+\textit{Problem statement.} Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find the $k$-list coloring of $G$ where $k= 4$ in polynomial time of the size (edges, nodes) of $G$.
 
-The inequality "$3 < k \leqslant 6$" requires further explanation. Since Thomassen proved that every planar graph (a cellular graph is trivially planar) is $5$-choosable \cite{Thomassen:1994:PG:184180.184192} and we have $\Delta(G)=6$ it is obvious that only $k \leqslant 6$ makes sense (with a trivial greedy algorithm $(\Delta(G)+1)$-list coloring can be constructed). Moreover, in \cite{662943} it has been proved that $\chi(G)=3$. Since $\chi(G) \leqslant ch(G)$ (trivially for all graphs) the necessity of the inequality is partially justified (the reason of the strict inequality will be explained in Hypothesis section).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Problem}
+\section{Research questions}
 
 %State a clear and concise problem that is going to be investigated.  Answer the question What is the real problem? - What is the problem or %value proposition addressed by the project? – Ideally one sentence that is very concrete.
 
-Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $d^+(v) \leqslant 3$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$. Construct a polynomial time algorithm that finds a kernel graph in $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
+Let $G$ be a cellular graph of an $1$-band buffering cellular network. 
+\begin{enumerate}
+\item What is the choice number of $G$?
+\item How can we find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $d^+(v) \leqslant 3$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$?
+\item Does there exist a polynomial time algorithm that finds a kernel in the graph $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$?
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Hypotheses}
@@ -114,13 +120,12 @@ The following theorem \cite{Galvin:1995:LCI:199352.199369} (non-multigraph versi
 
 \begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets.
 
-The inequality "$d^+(v) < |L(v)|$" explains the inequality "$3 < k \leqslant 6$" in Problem statement section ($d^+(v) = 2$ cannot always be achieved in a cellular graph therefore using this theorem we cannot prove that it is $3$-choosable).
-
-The proof of this theorem can be transformed into a polynomial time algorithm that solves the list coloring problem by assuming the following hypotheses:
+The proof of this theorem can be transformed into a polynomial time algorithm that solves the $4$-list coloring problem by assuming the following hypotheses:
 
 \begin{enumerate}
-\item It is possible to find such an orientation that is defined in Problem section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal}. Moreover, we want to keep the maximum indegree low because of Theorem \ref{thm:galvin}.
-\item In cycle-free directed graphs (DAG), it is possible to find (refer to Problem section) a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
+\item The choice number of a cellular graph is either $3$ or $4$ (see Appendix II).
+\item It is possible to find such an orientation that is defined in Research questions section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal} (see Appendix I).
+\item In cycle-free directed graphs (DAG), it is possible to find a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
 \end{enumerate}
 \end{thm}
 
@@ -133,7 +138,7 @@ The purpose of this research is to reduce the interference in $1$-band buffering
 
 % Explain the goal(s), objective(s), and/or the result(s) of your investigation. What are the expected deliverables/outcomes from the project?
 
-The goal is to implement a polynomial time algorithm that computes interference free channel assignments in $1$-band buffering cellular graphs and to prove that the choice number of cellular graphs is at most $4$.
+The goal is to implement a polynomial time algorithm that computes interference free channel assignments in $1$-band buffering cellular graphs and to prove that the choice number of cellular graphs is at most $4$, that is, if each node has at least $4$ free channels then there exists an interference-free channel assignment.
 
 \section{Research Methodology}
 \subsubsection*{Research methods: theory and implementation}
@@ -152,7 +157,7 @@ The repository contains different branches each of them is related to a particul
 \item final-report-implementation (Marine Collery)
 \item \textit{additional tasks that are not related to our research: e.g. peer-review} (group)
 \end{itemize}
-The authors inside the parenthesis are responsible for the particular branch. The repository \textit{research-plan} is the working repository for this document. Theory (\textit{final-report-theory}) and implementation (\textit{final-report-theory}) reflect to the responsibilities that are already documented in our research proposal (IX. Tasks).
+The authors inside the parenthesis are responsible for the particular branch. The repository \textit{research-plan} is the working repository for this document. Theory (\textit{final-report-theory}) and implementation (\textit{final-report-implementation}) reflect to the responsibilities that are already documented in our research proposal (IX. Tasks).
 A branch must contain individual contributions from its author. The authors are responsible to publish all of their work in the form of commits. The commit messages should be descriptive and informative and if it is necessary credit the source of the feedback that the particular patch is based on e.g. \textit{"Initial value of variable $x$ has been changed to $\pi$ (feedback from Prof X.Y.)"}
 Since \textit{final-report-implementation} is going to contain the source code of our implementation, the reproducibility is guaranteed.
 
@@ -160,14 +165,19 @@ On the ethics part, documenting our progress is of great importance. This way, w
 
 
 \section{Risks}
-In our research everything that is in the Hypothesis part is risk. In order to implement a polynomial time algorithm that solves our research problem we need to verify both hypotheses. Another source of risk can be the implementation of the proposed algorithms as the software development process can be delayed by some unforeseen implementation issues.
+In our research everything that is in the Hypothesis part is risk. In order to implement a polynomial time algorithm that solves our research problem we need to verify all hypotheses. Another source of risk can be the implementation of the proposed algorithms as the software development process can be delayed by some unforeseen implementation issues.
 
-However, we would like to note that Hypothesis 1 has already been eliminated by Lemma \ref{lem:bounded-acyclic-orientation}. In addition, by using Lemma \ref{lem:bounded-acyclic-orientation} we proved that if $G$ is a cellular graph then $ch(G) \leqslant 4$ (Theorem \ref{thm:choice-number}). This is important since from Thomassen theorem \cite{Thomassen:1994:PG:184180.184192} we only knew that $ch(G) \leqslant 5$ (since $G$ is planar).
+However, we would like to note that Hypothesis 1 has already been eliminated by Lemma \ref{lem:bounded-acyclic-orientation}. In addition, by using Lemma \ref{lem:bounded-acyclic-orientation} we proved that if $G$ is a cellular graph then $\ch(G) \leqslant 4$ (Theorem \ref{thm:choice-number}). This is important since from Thomassen theorem \cite{Thomassen:1994:PG:184180.184192} we only knew that $\ch(G) \leqslant 5$ (since $G$ is planar).
+
+\section{Tools}
+For our implementation we will use the JGraphT Library \cite{JGraphT}. It will provides us the essentials structure of graphs and help us generate our cellular graph.
+displaying our graph will be done through a Java Applet.
+
 
 \appendices
 
 \section{Hypothesis 1}
-In this appendix we prove our first hypothesis.
+In this appendix we prove hypothesis 2.
 
 \begin{lem}\label{lem:degree-constraint}
 Let $G$ be a cellular graph. Then $G$ has a node $v$ such that $\deg(v) \leqslant 3$.
@@ -227,7 +237,7 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
  $G^{(0)} := G$\;
  Initialize $f \colon V(G) \to \mathbb{N}$\;
  \For{$i\leftarrow 0$ \KwTo $|V(G)|-1$}{
-  Select $v \in V(G)$ such that $\deg(v) \leqslant 3$\;
+  Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3$\;
   $f(v):=i$\;
   $V(G^{(i+1)}):=V(G^{i}) \setminus \lbrace v \rbrace$\;
  }
@@ -244,12 +254,12 @@ It is easy to see that the proof of this lemma can be transformed into a polynom
 \begin{prop} Algorithm \ref{alg:find-acyclic-bounded-orientation} has a running time of $O(|V(G)| + |E(G)|)$.
 \end{prop}
 \begin{proof}
-It is enough to prove that "Select $v \in V(G)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
+It is enough to prove that "Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3$" can be done in $O(|V(G)|)$ since the rest is obvious. Let us initialize a queue $Q := \lbrace v \mid \deg(v) \leqslant  3\rbrace$ before we start running the algorithm. We pop a node $v$ from $G$ at every iteration and push new ones after the removal of $v$ if there are new nodes in $G$ that satisfy the degree condition. The pop and push methods can be implemented in constant time which completes the proof.
 \end{proof}
 It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
 
 \section{Choice number of cellular graphs}
-
+In this appendix we prove hypothesis 1).
 \begin{thm}\label{thm:choice-number}
 If $G$ is a cellular graph then $ch(G) \leqslant 4$.
 \end{thm}
@@ -257,6 +267,7 @@ If $G$ is a cellular graph then $ch(G) \leqslant 4$.
 Since $G$ is cellular, we can consider its $3$-bounded acyclic orientation by Lemma \ref{lem:bounded-acyclic-orientation}. This orientation is kernel-perfect by Richardson's theorem \cite{richardson1946}. Therefore we can apply Theorem \ref{thm:galvin} (with $d^+(v) \leqslant 3$ and $L(v)=4$) which concludes the proof.
 \end{proof}
 
+We note that $3=\chi(G) \leqslant \ch(G) \leqslant 4$ (if $G$ is cellular then $\chi(G) = 3$ \cite{662943} (Theorem 1)) therefore the choice number of a cellular graph is either $3$ or $4$.
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
