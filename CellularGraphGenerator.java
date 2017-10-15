@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.Random;
 
 import org.jgraph.graph.DefaultEdge;
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
-import org.jgrapht.generate.LinearGraphGenerator;
 import org.jgrapht.generate.RingGraphGenerator;
-import org.jgrapht.graph.GraphUnion;
 import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.UndirectedGraphUnion;
 
+
+/**
+ * Class that will generate our Cellulat Graphs for the tests
+ * @author Marine
+ *
+ */
 public class CellularGraphGenerator {
 	private int nbrEdge;
 	private int nbrCells;
@@ -25,7 +25,10 @@ public class CellularGraphGenerator {
 	
 	
 	
-	
+	/**
+	 * Constructor of the class CellularGraphGenerator
+	 * @param nbrCells
+	 */
 	public CellularGraphGenerator(int nbrCells) {
 		super();
 		this.nbrCells = nbrCells;
@@ -39,8 +42,11 @@ public class CellularGraphGenerator {
 		
 	} 
 	
+	/**
+	 * Private function called by {@link #generateFinalGraph()}
+	 */
 	private void addCell(){
-		///choose randomly the edge to be attached
+		//choose randomly the edge to be attached
 		int max = this.availableEdge.size();
 		Random rand = new Random();
 		int rdmNbr = rand.nextInt(max);
@@ -68,7 +74,7 @@ public class CellularGraphGenerator {
 			this.nbrVertex = this.nbrVertex+4;
 		}
 		
-		// TODO: all the other case !! without forgetting update available edges
+		// TODO: all the other case !! without forgetting update available edges but works for now
 
 	}
 	
