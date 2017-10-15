@@ -54,6 +54,7 @@ public class Main extends JApplet{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+     
 	}
 	
 	public void init(){
@@ -63,14 +64,32 @@ public class Main extends JApplet{
 		CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
 		undirectedGraph = generatorCell.generateFinalGraph();
 		
+		ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
 		
-		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
+		
+		
+		
+//		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
+//		getContentPane().add(new mxGraphComponent(jgxAdapter));
+//		
+//        resize(DEFAULT_SIZE);
+//        
+//        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
+//        layout.execute(jgxAdapter.getDefaultParent());
+        
+        DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+		directedGraphH = constructor.returnH();
+		
+		jgxAdapter = new JGraphXAdapter<>(directedGraphH);
 		getContentPane().add(new mxGraphComponent(jgxAdapter));
 		
         resize(DEFAULT_SIZE);
         
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.execute(jgxAdapter.getDefaultParent());
+		
+		
+        
         
 	}
         
