@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -80,6 +81,7 @@ public class Main extends JApplet{
         DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
 		directedGraphH = constructor.returnH();
 		
+		
 		jgxAdapter = new JGraphXAdapter<>(directedGraphH);
 		getContentPane().add(new mxGraphComponent(jgxAdapter));
 		
@@ -87,6 +89,14 @@ public class Main extends JApplet{
         
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.execute(jgxAdapter.getDefaultParent());
+        
+        ConstructionKernel constructorKernel = new ConstructionKernel(directedGraphH);
+		Set<String> kernelSet = constructorKernel.returnKernel();
+		
+		for (String p : kernelSet){
+			System.out.print(p + " ");
+		}
+		System.out.println("");
 		
 		
         
