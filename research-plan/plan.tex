@@ -72,20 +72,20 @@ On the list coloring of 1-band buffering cellular graphs
 \chead{KTH Royal Institute of Technology | II2202, Fall 2017, Period 1-2 | \today}
 
 \begin{abstract}
-The optimal channel allocation problem (CAP) in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related to the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we showed that there exists a polynomial time algorithm for 1-band buffering cellular graphs; and as a corollary it turned out the choice number of such a graph is at most 4. In addition, we carried out performance comparisons between the existing integer linear programming solution and our implementation.
+The optimal channel allocation problem in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related to the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we show that there exists a polynomial time algorithm for 1-band buffering cellular graphs; and as a corollary it turns out the choice number of such a graph is at most 4. In addition, we carried out performance comparisons between the existing integer linear programming solution and our implementation.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %Describe the background for chosen area that is going to be investigated. Write a short description of the area that is going to be %investigated. It is a brief description of the necessary background knowledge of the problem area and for carrying out the project.
 
-In telecommunication one of the most challenging problems is the efficient allocation of the available frequency. Since the available bandwidth is always limited (and expensive), the efficient utilization of the frequency spectrum is a major concern. Due to the fastest growing number of mobile Internet users, the optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
+In telecommunication one of the most challenging problems is the efficient allocation of available frequencies. Since the available bandwidth is always limited (and expensive), the efficient utilization of the frequency spectrum is a major concern. Due to the growing number of mobile Internet users, the optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
 
-Several variants of the channel allocation problem (CAP) have been defined based on the different channel constraints that a particular service might require. One of them is the so-called co-channel constraint where the same channel is not allowed to be assigned to neighboring cells simultaneously. This problem have been formalized as a graph coloring problem by many authors \cite{1456167}. Unfortunately, graph coloring is a well-known NP-complete problem \cite{Kar72} and therefore we do not know if a polynomial time algorithm for co-channel constraint satisfaction exists. Therefore various heuristic algorithms have been developed, the list of methods includes genetic algorithms, neural networks, graph-based and other approaches as well \cite{Audhya:2011:SCA:1988563.1988571}.
+Several variants of the channel allocation problem have been defined based on the different channel constraints that a particular service might require. One of them is the so-called co-channel constraint where the same channel is not allowed to be assigned to neighboring cells simultaneously. This problem has been formalized as a graph coloring problem by many authors \cite{1456167}. Unfortunately, graph coloring is a well-known NP-complete problem \cite{Kar72} and therefore we do not know if a polynomial time algorithm for co-channel constraint satisfaction exists. Therefore various heuristic algorithms have been developed, the list of methods includes genetic algorithms, neural networks, graph-based, and other approaches \cite{Audhya:2011:SCA:1988563.1988571}.
 
-Cellular network topologies usually admit certain geometric structure. The most common network topology is the hexagonal grid topology where each cell is represented by a regular hexagon (two cells are neighbors if they share a common boundary). In \cite{662943}, the authors exploited this special structure and proposed an algorithm that optimally solves the CAP in $k$-band buffering systems where $k=1,2$. Moreover, the algorithm has polynomial running time $O(p)$ where $p$ is the number of cells.
+Cellular network topologies are usually idealized as a certain geometric structure. The most common network structure is the hexagonal grid topology where each cell is represented by a regular hexagon (two cells are neighbors if they share a common boundary). In \cite{662943}, Sen, Roxborough, and Medidi exploited this special structure and proposed an algorithm that optimally solves the channel allocation problem in $k$-band buffering systems where $k=1,2$. Moreover, the algorithm has polynomial running time $O(p)$ where $p$ is the number of cells.
 
-The authors of \cite{7248845} introduced a \textit{distinctly different} CAP from all the above mentioned problems. Assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called cellular graph) where each cell has a fixed number of frequency channel (channels are either busy or free), they asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is the integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
+R. Wang, at all \cite{7248845} introduced a \textit{distinctly different} CAP from all the above mentioned problems, by assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called a cellular graph) where each cell has a fixed number of frequency channels (channels are either busy or free). They asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is an integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), while the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
 
 In what follows, we formulate the same problem in $1$-band buffering systems, then we outline a possibly polynomial time algorithm that optimally solves the list coloring problem in cellular graphs.
 
@@ -124,7 +124,7 @@ The proof of this theorem can be transformed into a polynomial time algorithm th
 
 \begin{enumerate}
 \item The choice number of a cellular graph is either $3$ or $4$ (see Appendix II).
-\item It is possible to find such an orientation that is defined in Research questions section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal} (see Appendix I).
+\item It is possible to find such an orientation as defined in the research questions section in polynomial time. This is necessary since finding a kernel in arbitrary graphs is NP-complete \cite{chvatal} (see Appendix I).
 \item In cycle-free directed graphs (DAG), it is possible to find a kernel in polynomial time (DAGs are kernel-perfect by Richardson's theorem \cite{richardson1946}).
 \end{enumerate}
 \end{thm}
@@ -132,7 +132,7 @@ The proof of this theorem can be transformed into a polynomial time algorithm th
 \section{Purpose}
 %Explain the purpose(s) of your project / investigation (the expected deliverables from the project). Answer the question: Why do this project? (purpose/effect, i.e. – the purpose can be to save environment but the goal is to build a robot that can pick up trash.) Why would you carry out the project?
 
-The purpose of this research is to reduce the interference in $1$-band buffering cellular graphs and therefore achieve higher network throughput. To be more specific, it can be used to reduce the interference in 802.11 wireless systems where each access point has a list of free channels.
+The purpose of this research is to reduce the interference in $1$-band buffering cellular graphs and therefore achieve higher network throughput. To be more specific, it can be used to reduce the interference in IEEE 802.11 wireless systems where each access point has a list of free channels.
 
 \section{Goals}
 
@@ -144,11 +144,11 @@ The goal is to implement a polynomial time algorithm that computes interference 
 \subsubsection*{Research methods: theory and implementation}
 For the theoretical part, the method is analytical since the 1-band buffering cellular topology can be easily modeled as a graph. In order
 to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible
-topologies that might arise in network deployments. For the implementation part\---where we compare our solution with existing solution(s)\---is empirical, that is, we compare different implementations using randomly generated topologies by measuring key resource metrics like CPU time or memory usage. The reason of carrying out experiments is twofold: (1) it is a way to test (not prove!) the correctness of the proofs, (2) the problem that the paper addresses is an engineering problem, that is, it is very important to provide key information on how the proposed algorithms would possibly perform in real-world scenarios.
+topologies that might arise in network deployments. For the implementation part\---where we compare our solution with existing solution(s)\---is empirical, that is, we compare different implementations using randomly generated topologies by measuring key resource metrics such as CPU time and memory usage. The reason for carrying out experiments is twofold: (1) it is a way to test (not prove!) the correctness of the proofs, (2) the problem that the paper addresses is an engineering problem, that is, it is very important to provide information on how the proposed algorithms might perform in real-world scenarios.
 
-In what follows we explain how we are conducting our research and how we are going to ensure that our research is ethical and reproducible.
-\subsubsection*{Rules, ethics and reproducibility}
-During the research we are going to maintain a repository on GitHub. The authors\---Marine Collery and Benjámin Seregi\---are responsible for maintaining this repository that is available at \url{https://github.com/Benmartin92/research-kth}. It is a public space as we believe that being open-source is a good way to make a research \textit{reproducible}.
+In what follows we explain how we conduct our research and how we will ensure that our research is ethical and reproducible.
+\subsubsection*{Rules, ethics, and reproducibility}
+During the research we are going to maintain a repository on GitHub. The authors\---Marine Collery and Benjámin Seregi\---are responsible for maintaining this repository at \url{https://github.com/Benmartin92/research-kth}. It is a public space as we believe that being open-source is a good way to make a research \textit{reproducible}.
 
 The repository contains different branches each of them is related to a particular task in our research:
 \begin{itemize}
@@ -161,17 +161,18 @@ The authors inside the parenthesis are responsible for the particular branch. Th
 A branch must contain individual contributions from its author. The authors are responsible to publish all of their work in the form of commits. The commit messages should be descriptive and informative and if it is necessary credit the source of the feedback that the particular patch is based on e.g. \textit{"Initial value of variable $x$ has been changed to $\pi$ (feedback from Prof X.Y.)"}
 Since \textit{final-report-implementation} is going to contain the source code of our implementation, the reproducibility is guaranteed.
 
-On the ethics part, documenting our progress is of great importance. This way, we ensure that the team members pulling their weight in the research therefore we avoid ethical issues like crediting authorship.
+With regard to ethics, documenting our progress is of great importance. This way, we ensure that the team members pulling their weight in the research therefore we avoid ethical issues such as crediting authorship.
 
 
 \section{Risks}
-In our research everything that is in the Hypothesis part is risk. In order to implement a polynomial time algorithm that solves our research problem we need to verify all hypotheses. Another source of risk can be the implementation of the proposed algorithms as the software development process can be delayed by some unforeseen implementation issues.
+In our research everything that is in the Hypothesis section is a risk. In order to implement a polynomial time algorithm that solves our research problem we need to verify all of the hypotheses. Another source of risk is the implementation of the proposed algorithms as the software development process can be delayed due to unforeseen implementation issues.
 However, we would like to note that Hypothesis 1 has already been eliminated by Lemma \ref{lem:bounded-acyclic-orientation}. In addition, by using Lemma \ref{lem:bounded-acyclic-orientation} we proved that if $G$ is a cellular graph then $\ch(G) \leqslant 4$ (Theorem \ref{thm:choice-number}). This is important since from Thomassen theorem \cite{Thomassen:1994:PG:184180.184192} we only knew that $\ch(G) \leqslant 5$ (since $G$ is planar).
 
 \section{Tools}
-For our implementation we will use the JGraphT Library \cite{JGraphT}. It will provides us the essentials structure of graphs and help us generate our cellular graph.
-displaying our graph will be done through a Java Applet.
+For our implementation we will use the JGraphT Library \cite{JGraphT}. It provides the essential structure of graphs and helps us generate our cellular graph. Displaying our graphs will be done through a Java Applet.
 
+\bibliographystyle{IEEEtran}
+\bibliography{ref.bib}
 
 \appendices
 
@@ -276,6 +277,4 @@ We note that $3=\chi(G) \leqslant \ch(G) \leqslant 4$ (if $G$ is cellular then $
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{IEEEtran}
-\bibliography{ref.bib}
 \end{document}
