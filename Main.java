@@ -1,35 +1,21 @@
 /**
  * 
  */
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 
-import org.jgraph.JGraph;
-import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgrapht.generate.GridGraphGenerator;
-import org.jgrapht.generate.RingGraphGenerator;
-import org.jgrapht.graph.AsUndirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 
-import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.swing.mxGraphComponent;
 
-import org.jgrapht.DirectedGraph;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
-import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.ext.JGraphXAdapter;
 /**
  * @author Marine
@@ -37,7 +23,7 @@ import org.jgrapht.ext.JGraphXAdapter;
  */
 public class Main extends JApplet{
 	private static final long serialVersionUID = 3256444702936019250L;
-    private static final Color DEFAULT_BG_COLOR = Color.decode("#FAFBFF");
+    //private static final Color DEFAULT_BG_COLOR = Color.decode("#FAFBFF");
     private static final Dimension DEFAULT_SIZE = new Dimension(530, 320);
     private JGraphXAdapter<String, DefaultEdge> jgxAdapter;
 
@@ -63,26 +49,15 @@ public class Main extends JApplet{
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
-		undirectedGraph = generatorCell.generateFinalGraph();
+		//undirectedGraph = generatorCell.generateFinalGraph();
+		undirectedGraph = generatorCell.generateFinalGraph2();
 		
-		ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
-		
-		
-		
-		
-//		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
-//		getContentPane().add(new mxGraphComponent(jgxAdapter));
-//		
-//        resize(DEFAULT_SIZE);
-//        
-//        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
-//        layout.execute(jgxAdapter.getDefaultParent());
-        
-        DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
-		directedGraphH = constructor.returnH();
+		//ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
 		
 		
-		jgxAdapter = new JGraphXAdapter<>(directedGraphH);
+		
+		
+		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
 		getContentPane().add(new mxGraphComponent(jgxAdapter));
 		
         resize(DEFAULT_SIZE);
@@ -90,13 +65,25 @@ public class Main extends JApplet{
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.execute(jgxAdapter.getDefaultParent());
         
-        ConstructionKernel constructorKernel = new ConstructionKernel(directedGraphH);
-		Set<String> kernelSet = constructorKernel.returnKernel();
+        //DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+		//directedGraphH = constructor.returnH();
 		
-		for (String p : kernelSet){
-			System.out.print(p + " ");
-		}
-		System.out.println("");
+		
+//		jgxAdapter = new JGraphXAdapter<>(directedGraphH);
+//		getContentPane().add(new mxGraphComponent(jgxAdapter));
+//		
+//        resize(DEFAULT_SIZE);
+//        
+//        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
+//        layout.execute(jgxAdapter.getDefaultParent());
+//        
+//        ConstructionKernel constructorKernel = new ConstructionKernel(directedGraphH);
+//		Set<String> kernelSet = constructorKernel.returnKernel();
+//		
+//		for (String p : kernelSet){
+//			System.out.print(p + " ");
+//		}
+//		System.out.println("");
 		
 		
         
