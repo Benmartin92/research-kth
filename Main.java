@@ -3,7 +3,6 @@
  */
 //import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Set;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -15,7 +14,6 @@ import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.swing.mxGraphComponent;
 
 import org.jgrapht.UndirectedGraph;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 /**
  * @author Marine
@@ -48,9 +46,10 @@ public class Main extends JApplet{
 		
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
-		CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
+		//CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
+		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(20,20);
 		//undirectedGraph = generatorCell.generateFinalGraph();
-		undirectedGraph = generatorCell.generateFinalGraph2();
+		undirectedGraph = generatorCellGrid.generateFinalGraph();
 		
 		//ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
 		
