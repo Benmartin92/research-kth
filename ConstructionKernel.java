@@ -26,10 +26,11 @@ public class ConstructionKernel {
 		Set<String> kernel = new HashSet<>();
 
 		while(iteratorT.hasNext()){
-			if(!this.marked.get(iteratorT.next())){
-				kernel.add(iteratorT.next());
+			String next = iteratorT.next();
+			if(!this.marked.get(next)){
+				kernel.add(next);
 				//mark all neighbors
-				for(String p : Graphs.neighborListOf(this.directedAcyGraph, iteratorT.next())){
+				for(String p : Graphs.neighborListOf(this.directedAcyGraph, next)){
 					this.marked.put(p, true);
 				}
 			}

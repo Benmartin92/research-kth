@@ -83,25 +83,25 @@ public class CellularGraphGenerator {
 			this.nbrVertex = this.nbrVertex+4;
 		}
 		
-		//Case if two common borders/edges
-		if ((nbrEdgesSource == 3 && nbrEdgesTarget < 3) || (nbrEdgesSource < 3 && nbrEdgesTarget == 3)){
-			this.finalGraph.addVertex(Integer.toString(this.nbrVertex+1));
-			this.finalGraph.addVertex(Integer.toString(this.nbrVertex+2));
-			this.finalGraph.addVertex(Integer.toString(this.nbrVertex+3));
-			
-			if (nbrEdgesSource == 3){
-				this.finalGraph.addEdge(this.finalGraph.getEdgeTarget(edge),Integer.toString(this.nbrVertex+1));
-				//this.finalGraph.getEdgeTarget(edge)
-				
-			}
-			else{
-				this.finalGraph.addEdge(this.finalGraph.getEdgeSource(edge),Integer.toString(this.nbrVertex+1));
-			}
-			this.finalGraph.addEdge(Integer.toString(this.nbrVertex+1),Integer.toString(this.nbrVertex+2));
-			this.finalGraph.addEdge(Integer.toString(this.nbrVertex+2),Integer.toString(this.nbrVertex+3));
-			//this.finalGraph.addEdge(Integer.toString(this.nbrVertex+3),Integer.toString());
-			
-		}
+//		//Case if two common borders/edges
+//		if ((nbrEdgesSource == 3 && nbrEdgesTarget < 3) || (nbrEdgesSource < 3 && nbrEdgesTarget == 3)){
+//			this.finalGraph.addVertex(Integer.toString(this.nbrVertex+1));
+//			this.finalGraph.addVertex(Integer.toString(this.nbrVertex+2));
+//			this.finalGraph.addVertex(Integer.toString(this.nbrVertex+3));
+//			
+//			if (nbrEdgesSource == 3){
+//				this.finalGraph.addEdge(this.finalGraph.getEdgeTarget(edge),Integer.toString(this.nbrVertex+1));
+//				//this.finalGraph.getEdgeTarget(edge)
+//				
+//			}
+//			else{
+//				this.finalGraph.addEdge(this.finalGraph.getEdgeSource(edge),Integer.toString(this.nbrVertex+1));
+//			}
+//			this.finalGraph.addEdge(Integer.toString(this.nbrVertex+1),Integer.toString(this.nbrVertex+2));
+//			this.finalGraph.addEdge(Integer.toString(this.nbrVertex+2),Integer.toString(this.nbrVertex+3));
+//			//this.finalGraph.addEdge(Integer.toString(this.nbrVertex+3),Integer.toString());
+//			
+//		}
 		
 		
 		// TODO: all the other case !! without forgetting update available edges but works for now
