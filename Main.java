@@ -3,6 +3,7 @@
  */
 //import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Set;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -14,6 +15,7 @@ import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.swing.mxGraphComponent;
 
 import org.jgrapht.UndirectedGraph;
+import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 /**
  * @author Marine
@@ -51,12 +53,24 @@ public class Main extends JApplet{
 		//undirectedGraph = generatorCell.generateFinalGraph();
 		undirectedGraph = generatorCellGrid.generateFinalGraph();
 		
-		//ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
+		ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
 		
 		
 		
 		
-		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
+//		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
+//		getContentPane().add(new mxGraphComponent(jgxAdapter));
+//		
+//        resize(DEFAULT_SIZE);
+//        
+//        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
+//        layout.execute(jgxAdapter.getDefaultParent());
+        
+        DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+		directedGraphH = constructor.returnH();
+		
+		
+		jgxAdapter = new JGraphXAdapter<>(directedGraphH);
 		getContentPane().add(new mxGraphComponent(jgxAdapter));
 		
         resize(DEFAULT_SIZE);
@@ -64,25 +78,13 @@ public class Main extends JApplet{
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.execute(jgxAdapter.getDefaultParent());
         
-        //DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
-		//directedGraphH = constructor.returnH();
+        ConstructionKernel constructorKernel = new ConstructionKernel(directedGraphH);
+		Set<String> kernelSet = constructorKernel.returnKernel();
 		
-		
-//		jgxAdapter = new JGraphXAdapter<>(directedGraphH);
-//		getContentPane().add(new mxGraphComponent(jgxAdapter));
-//		
-//        resize(DEFAULT_SIZE);
-//        
-//        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
-//        layout.execute(jgxAdapter.getDefaultParent());
-//        
-//        ConstructionKernel constructorKernel = new ConstructionKernel(directedGraphH);
-//		Set<String> kernelSet = constructorKernel.returnKernel();
-//		
-//		for (String p : kernelSet){
-//			System.out.print(p + " ");
-//		}
-//		System.out.println("");
+		for (String p : kernelSet){
+			System.out.print(p + " ");
+		}
+		System.out.println("");
 		
 		
         
