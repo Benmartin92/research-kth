@@ -227,7 +227,7 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
 \end{enumerate}
 1) If $v \in K$ then its neighbors are marked. Since we do not add marked nodes to $K$, it is always independent.
 2) When $v$ is unmarked and we add it to $K$ all of its neighbors come after it in the topological order (otherwise $v$ would have already been marked), that is, $v$ is connected to its neighbors by forward edges.
-
+\end{proof}
 \begin{algorithm}\label{alg:find-kernel-in-dags}
  \KwData{A directed acyclic graph $G = (V,A)$}
  \KwResult{A kernel $K \subseteq V(G)$}
@@ -239,10 +239,11 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
   	Mark the neighbors of $T(i)$\;
   }
  }
- \caption{Finding a kernel in $G$}
+ \caption{Finding a kernel in a DAG}
 \end{algorithm}
-We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$.
-\end{proof}
+
+We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$. We also note that an induced subgraph of a DAG is trivially a DAG therefore from Algorithm \ref{alg:find-kernel-in-dags} it follows that DAGs are kernel-perfect, that is, there is no need to apply Richardson's theorem in the proof of Theorem \ref{thm:choice-number}.
+
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
