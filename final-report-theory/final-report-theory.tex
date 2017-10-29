@@ -29,6 +29,7 @@
 \setlength{\headheight}{15.2pt}
 \usepackage[]{algorithm2e}
 \usepackage{url}
+\usepackage{graphicx}
 
 \newtheorem{thm}{Theorem}
 \newtheorem{lem}{Lemma}
@@ -98,6 +99,11 @@ R. Wang, at al. \cite{7248845} introduced a \textit{distinctly different} CAP fr
 In this section we introduce the basic notions and definitions that is essential to formulate the problem in a graph-theoretic setting.
 \begin{defi} A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
 \end{defi}
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{cellular_graph.png}
+\caption{An example of a cellular graph}\label{table:assignment}
+\end{figure}
 \begin{defi} A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
 \end{defi}
 \begin{defi} Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$.
@@ -121,28 +127,12 @@ Let $G$ be a cellular graph. Then $G$ has a node $v$ such that $\deg(v) \leqslan
 \end{lem}
 
 \begin{proof} Let us consider the planar drawing of the graph $G$ which corresponds to its hexagonal topology.
-Let $v$ be any node of $G$ and we assign $(0,0)$ to this node. We assign coordinates to every node starting from node $v$ in the following way. If a node $w$ is to the north of node $v$ then the coordinates of node $w$ is equal to the coordinates of node $v$ plus $(0,1)$. We summarize this method in Table \ref{table:assignment} according to the cardinal directions.
-\begin{table}[!h]
+Let $v$ be any node of $G$ and we assign $(0,0)$ to this node. We assign coordinates to every node starting from node $v$ in the following way. If a node $w$ is to the north of node $v$ then the coordinates of node $w$ is equal to the coordinates of node $v$ plus $(0,1)$. We summarize this method in Fig. \ref{fig:assignment} according to the cardinal directions.
+\begin{figure}[!h]
 \centering
- \begin{tabular}{||c|c||} 
- \hline
- Direction & Change  \\ [0.5ex] 
- \hline\hline
- N & $(0,1)$  \\ 
- \hline
- NE & $(1,1)$ \\
- \hline
- SE & $(1,0)$ \\
- \hline
- S & $(0,-1)$ \\
- \hline
- SW & $(-1,-1)$ \\
- \hline
- NW & $(-1,0)$ \\
- \hline
- \end{tabular}
-  \caption{Rules of the hexagonal coordinate system}\label{table:assignment}
-\end{table}
+\includegraphics[scale=0.4]{hexagonal_coordinate_system.png}
+\caption{Hexagonal coordinate system}\label{fig:assignment}
+\end{figure}
 By applying this method to every node, we get a coordinate system within our hexagonal topology. Since there are finitely many node in $V(G)$, we can select the maximal node by selecting the node with maximal $x$- and $y$-coordinate, that is, a node $w$ with the following property: if $(x_1,y_1)$ is the coordinates of $w$ and $v \neq w$ is another node with the coordinates $(x_2,y_2)$ then $x_1 \geqslant x_2$ and $y_1 > y_2$ are satisfied.
 
 To obtain a contradiction, suppose that the maximal node $w$ has more than 3 neighbors. It follows then at least one if its neighbors is either to the north, northeast or southeast to $w$. However, this neighbor would violate the maximality of $w$. Therefore we proved that $\deg(w) \leqslant 3$.
