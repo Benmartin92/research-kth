@@ -235,6 +235,22 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
 
 We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$. We also note that an induced subgraph of a DAG is trivially a DAG therefore from Algorithm \ref{alg:find-kernel-in-dags} it follows that DAGs are kernel-perfect, that is, there is no need to apply Richardson's theorem in the proof of Theorem \ref{thm:choice-number}.
 
+Now we have everything to prove our main result. First we give the algorithm and after that we prove its correctness.
+\begin{algorithm}[h!]\label{alg:four-list-coloring}
+ \KwData{A cellular graph $G$ and a set of colors $L(v)$ for all $v \in V(G)$ with $|L(v)| \geqslant 4$}
+ \KwResult{$4$-list coloring of $G$}
+  Let $G^*$ be the $3$-bounded acyclic orientation of $G$ (Algorithm \ref{alg:find-acyclic-bounded-orientation})\;
+  \While{$V(G^*)$ is non-empty} {
+  	Let $\alpha$ be a color from $L(v)$ where $v \in V(G^*)$\;
+  	$V_\alpha := \lbrace v \in V(G) \mid \alpha \in L(v) \rbrace$\;
+  	Let $D$ be the subgraph of $G^*$ that $V_\alpha$ spans\;
+  	Let $U$ be a kernel in $D$ (Algorithm \ref{alg:find-kernel-in-dags})\;
+  	Color the nodes in $U$ with color $\alpha$\;
+  	Remove $\alpha$ from $L(v)$ for all $v \in V_\alpha$\;
+  	Remove the colored nodes, that is, $V(G^*) := V(G^*) \setminus U$\;
+  }
+ \caption{$4$-list coloring of a cellular graph}
+\end{algorithm}
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
