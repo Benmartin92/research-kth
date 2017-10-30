@@ -30,6 +30,7 @@
 \usepackage[]{algorithm2e}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{float}
 
 \newtheorem{thm}{Theorem}
 \newtheorem{lem}{Lemma}
@@ -38,6 +39,11 @@
 \newtheorem{conj}{Conjecture}
 
 \DeclareMathOperator*{\ch}{ch}
+
+% https://tex.stackexchange.com/questions/82271/multiple-algorithm2e-algorithms-in-two-column-documents
+\makeatletter
+\newcommand{\removelatexerror}{\let\@latex@error\@gobble}
+\makeatother
 
 \title{\LARGE \bf
 %modif
@@ -192,9 +198,9 @@ We are about to prove one of our main results, that is, cellular graphs are $4$-
 Before proving our theorem we need to introduce the notion of kernel in graphs and a theorem from Galvin \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) that will play a central role in our study. The proof of the theorem is inductive and can be transformed into an algorithm.
 \begin{defi} Let $G$ be a directed graph. We say that an independent set $K \subseteq V(G)$ is a kernel of $G$ if it satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
 \end{defi}
-\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets. $\blacksquare$
+\begin{thm}[Galvin, 1995]\label{thm:galvin} Let $G$ be a graph and $\lbrace L(v) \mid v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets. $\blacksquare$
 \end{thm}
-We will prove this theorem later through our algorithm. 
+We will reformulate this theorem later and prove it through our algorithm. 
 \begin{defi} We note that a directed graph is called kernel-perfect if all of its induced subgraphs contain a kernel.
 \end{defi}
 \begin{thm}\label{thm:choice-number}
@@ -209,7 +215,7 @@ We proved that cellular graphs are $4$-choosable what is left to show is that th
 
 It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-complete \cite{chvatal}. However we will show that in DAGs (directed acyclic graphs) this problem can be easily solved in polynomial time. This is crucial as our $4$-list coloring algorithm has to construct kernels repeatedly during its running time.
 
-\begin{lem} Let $G$ be a directed acyclic graph. Then a kernel $K \subseteq V(G)$ can be found in polynomial time.
+\begin{lem}\label{lem:kernel-lemma} Let $G$ be a directed acyclic graph. Then a kernel $K \subseteq V(G)$ can be found in polynomial time.
 \end{lem}
 \begin{proof} Since $G$ is acyclic we can consider the topological order of its nodes (which can be computed in polynomial time). Let $\lbrace v_1, v_2, \ldots, v_n \rbrace$ be this topological order. Let us start from node $v_1$ and add it to the kernel, that is, $K = \lbrace v_1 \rbrace$. Mark the neighbors of $v_1$. After that, we move on with the second node $v_2$, if it is marked we skip it otherwise we add it to the kernel $(K := K \cup \lbrace v_2 \rbrace)$ and mark its neighbors. Repeat this procedure with the remaining nodes. We need to prove that
 \begin{enumerate}
@@ -234,9 +240,19 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
 \end{algorithm}
 
 We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$. We also note that an induced subgraph of a DAG is trivially a DAG therefore from Algorithm \ref{alg:find-kernel-in-dags} it follows that DAGs are kernel-perfect, that is, there is no need to apply Richardson's theorem in the proof of Theorem \ref{thm:choice-number}.
+\section{$4$-list coloring of cellular graphs}
+Now we have everything to prove our main result and give a polynomial algorithm that computes a $4$-list coloring of cellular graph. 
 
-Now we have everything to prove our main result. First we give the algorithm and after that we prove its correctness.
-\begin{algorithm}[h!]\label{alg:four-list-coloring}
+First we reformulate Galvin's theorem for cellular graphs and prove it (Theorem \ref{thm:galvin}), the proof is based on \cite{citeulike:395714} (Lemma 5.4.3). The original proof uses mathematical induction, we just repeat the same argument, fortunately the inductive step describes how to color the nodes, that is, the proof can be transformed into an algorithm. The cellular version, however, uses our result, namely Lemma \ref{lem:bounded-acyclic-orientation}. In addition, it also uses Lemma \ref{lem:kernel-lemma}. Then we prove that its (Algorithm \ref{alg:four-list-coloring}) running time is polynomial. Algorithm \ref{alg:four-list-coloring} uses Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags}. The fact that Algorithm \ref{alg:four-list-coloring} being polynomial will simply follow from the fact that Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags} are polynomial.
+\begin{thm}[Galvin's theorem for cellular graphs] Let $G$ be a graph and $\lbrace L(v) \mid v \in V(G) \rbrace$ given color sets. If $G$ has a kernel-perfect orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$, then $G$ can be colored from the given color sets.
+In particular, if $G$ is a cellular graph and $|L(v)| \geqslant 4$ for all $v \in V(G)$. Then $G$ can be colored from the given color sets.
+\end{thm}
+\begin{proof}
+Let $G^*$ be the $3$-bounded acyclic orientation of $G$ (Lemma \ref{lem:bounded-acyclic-orientation}), that is, $d^+(v) \leqslant 3$. We apply induction on $|V(G^*)|$. For $|V(G^*)|=0$, the empty coloring is good. Let us assume that we know how to color $G^*$ with $|V(G^*)| < n$ and consider the case when $|V(G^*)|=n$. Let $\alpha$ be any color from one of the colors sets and set $V_\alpha$ to $\lbrace v \in V(G) \mid \alpha \in L(v) \rbrace$. Consider the non-empty subgraph $D$ of $G^*$ that is spanned by $V_\alpha$. Since $G^*$ is a DAG, it is kernel-perfect (Lemma \ref{lem:kernel-lemma}), therefore $D$ has a kernel $U \neq \emptyset$. Assign the color $\alpha$ to every node in $U$ and remove $\alpha$ from $L(v)$ for all $v \in V_\alpha$. Since $U$ is independent, and we removed $\alpha$, it follows that we did not (and we will not) violate the rules of the graph coloring. After that, remove $U$ from $D$, since every node in $V(D) \setminus U$ sends an edge to $U$, having removed $U$ from $D$, we decreased the outdegree of each node in $D$ by $1$. Since the modified lists $L'(v)$ $(v \in V_\alpha)$ satisfy $d^+(v) < |L'(v)|$ for all $v \in V(D) \setminus U$, we can use our induction hypothesis to color $V(G^*) \setminus U$.
+\end{proof}
+\begin{figure}[H]
+\removelatexerror
+\begin{algorithm}[H]\label{alg:four-list-coloring}
  \KwData{A cellular graph $G$ and a set of colors $L(v)$ for all $v \in V(G)$ with $|L(v)| \geqslant 4$}
  \KwResult{$4$-list coloring of $G$}
   Let $G^*$ be the $3$-bounded acyclic orientation of $G$ (Algorithm \ref{alg:find-acyclic-bounded-orientation})\;
@@ -251,6 +267,8 @@ Now we have everything to prove our main result. First we give the algorithm and
   }
  \caption{$4$-list coloring of a cellular graph}
 \end{algorithm}
+\end{figure}
+
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
