@@ -99,9 +99,9 @@ Cellular network topologies are usually idealized as a certain geometric structu
 
 R. Wang, at al. \cite{7248845} introduced a \textit{distinctly different} CAP from all the above mentioned problems, by assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called a cellular graph) where each cell has a fixed number of frequency channel (channels are either busy or free). They asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is an integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), while the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
 
-**add a short outline**
+In Section \ref{sec:theoretical-framework}, we introduce the basic terms and notions that are required to understand the theory, this allows us to describe the problem in a graph theoretic setting in Section \ref{sec:problem-questions}. Section \ref{sec:orientation} studies how to find an acyclic orientation of cellular graphs such that the indegree of the nodes are below some upper bound. In addition, we prove that this can be done in polynomial time. In Section \ref{sec:4-choosable}, we prove that cellular graphs are $4$-choosable. Section \ref{sec:dag} investigates how to find kernels in directed acyclic graphs in polynomial time. Section \ref{sec:4-list-coloring} combines all of the results of the previous sections and gives a polynomial time algorithm that constructs a $4$-list coloring of a cellular graph.
 
-\section{Theoretical Framework}
+\section{Theoretical Framework}\label{sec:theoretical-framework}
 In this section we introduce the basic notions and definitions that is essential to formulate the problem in a graph-theoretic setting.
 \begin{defi} A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
 \end{defi}
@@ -118,7 +118,7 @@ In this section we introduce the basic notions and definitions that is essential
 \end{defi}
 
 From now on we assume that all graphs are connected. We can do it without the loss of generality as all the algorithms and proofs can be repeated for each connected component of a graph.
-\section{Problem formulation and research questions}
+\section{Problem formulation and research questions}\label{sec:problem-questions}
 Let $G$ be a cellular graph of an $1$-band buffering cellular network. 
 \begin{enumerate}
 \item What is the choice number of $G$?
@@ -126,7 +126,7 @@ Let $G$ be a cellular graph of an $1$-band buffering cellular network.
 \item Does there exist a polynomial time algorithm that finds a kernel in the graph $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$?
 \end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Acyclic orientations of cellular graphs}
+\section{Acyclic orientations of cellular graphs}\label{sec:orientation}
 
 % rewrite this
 Let $G$ be a cellular graph of an $1$-band buffering cellular network. Find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $d^+(v) \leqslant 3$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$. Construct a polynomial time algorithm that finds a kernel graph in $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
@@ -196,7 +196,7 @@ It is enough to prove that "Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3
 \end{proof}
 
 It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
-\section{Cellular graphs are $4$-choosable}
+\section{Cellular graphs are $4$-choosable}\label{sec:4-choosable}
 
 We are about to prove one of our main results, that is, cellular graphs are $4$-choosable. We would like to note that since $G$ is a planar, it follows from Thomassen's theorem \cite{Thomassen:1994:PG:184180.184192} that it is $5$-choosable. It is worth noting that cellular graphs are $3$-colorable \cite{662943} (Theorem 1). However, even with this additional constraint, we still cannot say that if $G$ is planar and $3$-colorable then it is $4$-choosable as a counterexample can be found in \cite{JGT:JGT4}. The counterexample is quite interesting (second figure) as it is constructed from a cellular graph however, the author added one extra node and joined it to all of the outer nodes. Due to this step, the resulting graph does not always contain a node of degree $3$ therefore the property of Lemma \ref{lem:degree-constraint} is not true for this construction.
 
@@ -216,7 +216,7 @@ Since $G$ is cellular, we can consider its $3$-bounded acyclic orientation by Le
 \end{proof}
 
 We proved that cellular graphs are $4$-choosable what is left to show is that there exists an algorithm that constructs such colorings in polynomial time.
-\section{Finding a kernel in DAGs}
+\section{Finding a kernel in DAGs}\label{sec:dag}
 
 It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-complete \cite{chvatal}. However we will show that in DAGs (directed acyclic graphs) this problem can be easily solved in polynomial time. This is crucial as our $4$-list coloring algorithm has to construct kernels repeatedly during its running time.
 
@@ -245,7 +245,7 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
 \end{algorithm}
 
 We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$. We also note that an induced subgraph of a DAG is trivially a DAG therefore from Algorithm \ref{alg:find-kernel-in-dags} it follows that DAGs are kernel-perfect, that is, there is no need to apply Richardson's theorem in the proof of Theorem \ref{thm:choice-number}.
-\section{$4$-list coloring of cellular graphs}
+\section{$4$-list coloring of cellular graphs}\label{sec:4-list-coloring}
 Now we have everything to prove our main result and give a polynomial algorithm that computes a $4$-list coloring of cellular graph. 
 
 First we reformulate Galvin's theorem for cellular graphs and prove it (Theorem \ref{thm:galvin}), the proof is based on \cite{citeulike:395714} (Lemma 5.4.3). The original proof uses mathematical induction, we just repeat the same argument, fortunately the inductive step describes how to color the nodes, that is, the proof can be transformed into an algorithm. The cellular version, however, uses our result, namely Lemma \ref{lem:bounded-acyclic-orientation}. In addition, it also uses Lemma \ref{lem:kernel-lemma}. Then we prove that its (Algorithm \ref{alg:four-list-coloring}) running time is polynomial. Algorithm \ref{alg:four-list-coloring} uses Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags}. The fact that Algorithm \ref{alg:four-list-coloring} being polynomial will simply follow from the fact that Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags} are polynomial.
