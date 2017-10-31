@@ -119,7 +119,12 @@ In this section we introduce the basic notions and definitions that is essential
 
 From now on we assume that all graphs are connected. We can do it without the loss of generality as all the algorithms and proofs can be repeated for each connected component of a graph.
 \section{Problem formulation and research questions}
-
+Let $G$ be a cellular graph of an $1$-band buffering cellular network. 
+\begin{enumerate}
+\item What is the choice number of $G$?
+\item How can we find an orientation of $G$ such that the newly constructed directed graph $G'$ does not contain directed cycles such that $d^+(v) \leqslant 3$ ($d^+(v)$ is the indegree of $v$) for all $v \in V(G')$ in polynomial time of the size of $G'$?
+\item Does there exist a polynomial time algorithm that finds a kernel in the graph $G'$, that is, an independent set $K \subseteq V(G)$ that satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$?
+\end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Acyclic orientations of cellular graphs}
 
