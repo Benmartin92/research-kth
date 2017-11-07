@@ -21,6 +21,7 @@ public class ConstructionKernel {
 		}
 	}
 	
+	
 	public Set<String> returnKernel(){
 		TopologicalOrderIterator<String, DefaultEdge> iteratorT = new TopologicalOrderIterator<>(this.directedAcyGraph);
 		Set<String> kernel = new HashSet<>();
@@ -36,5 +37,6 @@ public class ConstructionKernel {
 			}
 		}
 		return kernel;
+		
 	}
 }
