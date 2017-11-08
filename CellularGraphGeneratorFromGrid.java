@@ -37,12 +37,13 @@ public class CellularGraphGeneratorFromGrid {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		this.generatorGrid.generateUndirectedGraph(this.finalGraph, new StringVertexFactory(), resultMap);
-		int N = this.rows;
+		int N = this.cols; // N
+		int M = this.rows;
 		int j = 1;
 		int i = 1;
 		int next = 1;
 		//for(int i=1; i<N*N-2*N;i=i+3){
-		while(i < N*N+1){
+		while(i < N*M+1){
 			boolean build = true;
 			boolean newLine = false;
 			
@@ -56,7 +57,7 @@ public class CellularGraphGeneratorFromGrid {
 			}
 			
 			//last row
-			if (i + 2*N > N*(N-1)+i%N){
+			if (i + 2*N > N*(M-1)+i%N){
 				build = false;
 			}
 			
@@ -91,7 +92,7 @@ public class CellularGraphGeneratorFromGrid {
 //				}
 				
 				// last row + normal
-				if (i + 2*N == N*(N-1)+i%N){
+				if (i + 2*N == N*(M-1)+i%N){
 					this.finalGraph.removeVertex(Integer.toString(i + 2*N));
 				}
 			
@@ -111,22 +112,22 @@ public class CellularGraphGeneratorFromGrid {
 				}
 				
 				// last row + end of the row
-				if (i == N*N-2*N-1){
+				if (i == N*M-2*N-1){
 					this.finalGraph.removeVertex(Integer.toString(N*N));
 					this.finalGraph.removeVertex(Integer.toString(N*N-N));
 					this.finalGraph.removeVertex(Integer.toString(N*N-1));
 				}
-				else if (i == N*N-2*N){
+				else if (i == N*M-2*N){
 					this.finalGraph.removeVertex(Integer.toString(N*N));
 				}
 				
 				//first column + end of the column
 				
-				if (i == N*(N-1)+1){
+				if (i == N*(M-1)+1){
 					this.finalGraph.removeVertex(Integer.toString(N*(N-1)+1));
 					this.finalGraph.removeVertex(Integer.toString(N*(N-1)+2));
 				}
-				else if(i == N*(N-2)+1){
+				else if(i == N*(M-2)+1){
 					this.finalGraph.removeVertex(Integer.toString(N*(N-2)+1));
 					this.finalGraph.removeVertex(Integer.toString(N*(N-1)+1));
 				}

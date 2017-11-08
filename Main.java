@@ -3,11 +3,17 @@
  */
 //import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.io.IOException;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -53,7 +59,7 @@ public class Main extends JApplet{
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		//CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
-		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(20,20);
+		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(10,10);
 		//undirectedGraph = generatorCell.generateFinalGraph();
 		undirectedGraph = generatorCellGrid.generateFinalGraph();
 		
@@ -127,9 +133,9 @@ public class Main extends JApplet{
 		
 		
 		
-		FourListColoringCellularGraph fourListColoringAlgo = new FourListColoringCellularGraph(nbrColor,lengthSetofColors);
+		FourListColoringCellularGraph fourListColoringAlgo = new FourListColoringCellularGraph(nbrColor,lengthSetofColors, directedGraphH);
 		
-		List<List<String>> listColorToVertexFinal = fourListColoringAlgo.computeColoring(directedGraphH);
+		List<List<String>> listColorToVertexFinal = fourListColoringAlgo.computeColoring();
 		for (int k=0;k<listColorToVertexFinal.size();k++){
 			System.out.println("Color"+k);
 			for(String s : listColorToVertexFinal.get(k)){
@@ -166,6 +172,71 @@ public class Main extends JApplet{
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.execute(jgxAdapter.getDefaultParent());
         //END DISPLAY
+        
+        int nbrVertex = directedGraphH.vertexSet().size();
+        int[][] matrix = new int [nbrVertex][nbrVertex];
+        
+        DirectedAcyclicGraph<String, DefaultEdge> directedGraphH2 = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+        DirectedAcyclicGraph<String, DefaultEdge> directedGraphH3 = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+		
+		for (String p : directedGraphH.vertexSet()){
+				directedGraphH2.addVertex(p);
+				directedGraphH3.addVertex(p);
+		}
+		
+		for(DefaultEdge e : directedGraphH.edgeSet()){
+			directedGraphH2.addEdge(directedGraphH.getEdgeSource(e), directedGraphH.getEdgeTarget(e));
+			directedGraphH3.addEdge(directedGraphH.getEdgeSource(e), directedGraphH.getEdgeTarget(e));
+		}
+        
+		int i=0;
+        for (String s : directedGraphH3.vertexSet()){
+        	int j=0;
+			for (String t : directedGraphH2.vertexSet()){
+				if (directedGraphH.containsEdge(s,t)){
+					matrix[i][j] = 1;
+				}
+				else
+					matrix[i][j] = 0;
+				j=j+1;
+			}
+			i=i+1;
+		}
+
+        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        
+        FileWriter write;
+		try {
+			write = new FileWriter("matrix"+timeLog+".txt",true);
+			for (int i1 =0; i1<nbrVertex; i1++){
+				for (int j =0; j<nbrVertex; j++){
+					write.write(matrix[i1][j] + " ");
+				}
+				write.write("\n");
+			}
+			write.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		FileWriter write2;
+		try {
+			write2 = new FileWriter("listVcolor"+timeLog+".txt",true);
+			List<List<String>> list = fourListColoringAlgo.getListVertecToColorInitial();
+			for (int i1 =0; i1<list.size(); i1++){
+				for (int j =0; j<list.get(i1).size(); j++){
+					write2.write(fourListColoringAlgo.getListVertecToColorInitial().get(i1).get(j) + " ");
+				}
+				write2.write("\n");
+			}
+			write2.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
         
         
         
