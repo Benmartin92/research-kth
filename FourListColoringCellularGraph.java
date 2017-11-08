@@ -5,21 +5,33 @@ import java.util.Set;
 
 import org.jgraph.graph.DefaultEdge;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
-import org.jgrapht.graph.DirectedSubgraph;
 
 public class FourListColoringCellularGraph {
 	int nbrColor;
 	int[] lengthSetofColors;
 	List<List<String>> listVertexToColor;
+	List<List<String>> listVertexToColorFIXED;
+	
 	List<List<String>> listColorToVertex;
 	List<List<String>> listColorToVertexFinal;
+	DirectedAcyclicGraph<String, DefaultEdge> directedGraphH;
 	
-	public FourListColoringCellularGraph(int nbrColor,	int[] lengthSetofColors){
+	public FourListColoringCellularGraph(int nbrColor,	int[] lengthSetofColors, DirectedAcyclicGraph<String, DefaultEdge> directedGraphH){
 		this.nbrColor=nbrColor;
 		this.lengthSetofColors=lengthSetofColors;
 		this.listVertexToColor = new ArrayList<List<String>>();
+		this.listVertexToColorFIXED = new ArrayList<List<String>>();
 		this.listColorToVertex = new ArrayList<List<String>>();
 		this.listColorToVertexFinal = new ArrayList<List<String>>();
+		this.directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+		
+		for (String p : directedGraphH.vertexSet()){
+				this.directedGraphH.addVertex(p);
+		}
+		
+		for(DefaultEdge e : directedGraphH.edgeSet()){
+			this.directedGraphH.addEdge(directedGraphH.getEdgeSource(e), directedGraphH.getEdgeTarget(e));
+		}
 	}
 	
 	private void generateSetOfColors(Set<String> vertexSet){
@@ -45,12 +57,16 @@ public class FourListColoringCellularGraph {
 				
 			}
 			this.listVertexToColor.add(listTemp);
+			this.listVertexToColorFIXED.add(listTemp);
 			i=i+1;
 		}
+		
+		//Saving listVertexToColor in listVertexToColorFIXED
+		
 	}
 	
 	
-	public List<List<String>> computeColoring(DirectedAcyclicGraph<String, DefaultEdge> directedGraphH){
+	public List<List<String>> computeColoring(){
 		generateSetOfColors(directedGraphH.vertexSet());
 		
 		
@@ -106,5 +122,9 @@ public class FourListColoringCellularGraph {
 		
 		return this.listColorToVertexFinal;
 	
+	}
+
+	public List<List<String>> getListVertecToColorInitial(){
+		return this.listVertexToColorFIXED;
 	}
 }
