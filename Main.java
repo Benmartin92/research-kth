@@ -19,11 +19,13 @@ import javax.swing.JApplet;
 import javax.swing.JFrame;
 
 import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 
 import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.swing.mxGraphComponent;
 
+import org.jgrapht.DirectedGraph;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.ext.JGraphXAdapter;
@@ -59,7 +61,7 @@ public class Main extends JApplet{
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		//CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
-		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(10,10);
+		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(4,4);
 		//undirectedGraph = generatorCell.generateFinalGraph();
 		undirectedGraph = generatorCellGrid.generateFinalGraph();
 		
@@ -67,7 +69,7 @@ public class Main extends JApplet{
 		
 		
 		
-		
+//		
 //		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
 //		getContentPane().add(new mxGraphComponent(jgxAdapter));
 //		
@@ -78,6 +80,7 @@ public class Main extends JApplet{
         
 		//Acyclic Graph Construction
         DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
+        //DirectedGraph<String, DefaultEdge> directedGraphH = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 		directedGraphH = constructor.returnH();
 		
 		

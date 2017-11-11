@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.jgraph.graph.DefaultEdge;
 import org.jgrapht.UndirectedGraph;
@@ -64,9 +66,19 @@ public class CellularGraphGeneratorFromGrid {
 			// up right coin should be taken care of by the while condition
 			
 			if (build){
-				this.finalGraph.removeVertex(Integer.toString(i+1+N));
+				//this.finalGraph.removeVertex(Integer.toString(i+1+N));
+				
+				this.finalGraph.addEdge(Integer.toString(i+1+N), Integer.toString(i));
+				//this.finalGraph.addEdge(Integer.toString(i), Integer.toString(i+1+N));
+				
+				this.finalGraph.addEdge(Integer.toString(i+1+N), Integer.toString(i+2*N+2));
+				//this.finalGraph.addEdge(Integer.toString(i+2*N+2), Integer.toString(i+1+N));
+				
 				this.finalGraph.addEdge(Integer.toString(i+1), Integer.toString(i+N+2));
+				//this.finalGraph.addEdge(Integer.toString(i+N+2), Integer.toString(i+1));
+				
 				this.finalGraph.addEdge(Integer.toString(i+N), Integer.toString(i+2*N+1));
+				//this.finalGraph.addEdge(Integer.toString(i+2*N+1), Integer.toString(i+N));
 				
 				
 				// first row + normal
@@ -239,6 +251,23 @@ public class CellularGraphGeneratorFromGrid {
 //				}
 //			}
 		}
+		//ALL EDGES BOTH SIDES:
+//		Set<String> kernelSet1 = new HashSet<String>();
+//		Set<String> kernelSet2 = new HashSet<String>();
+//		for (String s : this.finalGraph.vertexSet()){
+//			kernelSet1.add(s);
+//			kernelSet2.add(s);
+//		}
+//		for (String s1 : kernelSet1){
+//			for (String s2 : kernelSet2){
+//				if (this.finalGraph.containsEdge(s1, s2)){
+//					this.finalGraph.addEdge(s2, s1);
+//				}
+//			}
+//		}
+		
+		
+		
 		return this.finalGraph;
 	}
 	
