@@ -61,7 +61,7 @@ public class Main extends JApplet{
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		//CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
-		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(4,4);
+		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(20,20);
 		//undirectedGraph = generatorCell.generateFinalGraph();
 		undirectedGraph = generatorCellGrid.generateFinalGraph();
 		
@@ -69,7 +69,7 @@ public class Main extends JApplet{
 		
 		
 		
-//		
+		
 //		jgxAdapter = new JGraphXAdapter<>(undirectedGraph);
 //		getContentPane().add(new mxGraphComponent(jgxAdapter));
 //		
@@ -176,6 +176,7 @@ public class Main extends JApplet{
         layout.execute(jgxAdapter.getDefaultParent());
         //END DISPLAY
         
+		
         int nbrVertex = directedGraphH.vertexSet().size();
         int[][] matrix = new int [nbrVertex][nbrVertex];
         
@@ -238,7 +239,6 @@ public class Main extends JApplet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
         
         
         
