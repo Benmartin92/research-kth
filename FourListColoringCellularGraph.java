@@ -124,7 +124,7 @@ public class FourListColoringCellularGraph {
 	
 	}
 
-	public List<List<String>> getListVertecToColorInitial(){
+	public List<List<String>> getListVertexToColorInitial(){
 		return this.listVertexToColorFIXED;
 	}
 }
