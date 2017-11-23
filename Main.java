@@ -3,6 +3,7 @@
  */
 //import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -58,10 +59,12 @@ public class Main extends JApplet{
 	
 	public void init(){
 		
+		int N=10;//rows
+		int M=10;//columns
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		//CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
-		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(20,20);
+		CellularGraphGeneratorFromGrid generatorCellGrid = new CellularGraphGeneratorFromGrid(N,M);
 		//undirectedGraph = generatorCell.generateFinalGraph();
 		undirectedGraph = generatorCellGrid.generateFinalGraph();
 		
@@ -147,7 +150,7 @@ public class Main extends JApplet{
 			System.out.println(" ");
 		}
 		
-
+		
 		// Display NEXT
         
 		for (int k=0; k < listColorToVertexFinal.size(); k++){
@@ -227,10 +230,10 @@ public class Main extends JApplet{
 		FileWriter write2;
 		try {
 			write2 = new FileWriter("listVcolor"+timeLog+".txt",true);
-			List<List<String>> list = fourListColoringAlgo.getListVertecToColorInitial();
+			List<List<String>> list = fourListColoringAlgo.getListVertexToColorInitial();
 			for (int i1 =0; i1<list.size(); i1++){
 				for (int j =0; j<list.get(i1).size(); j++){
-					write2.write(fourListColoringAlgo.getListVertecToColorInitial().get(i1).get(j) + " ");
+					write2.write(list.get(i1).get(j) + " ");
 				}
 				write2.write("\n");
 			}
@@ -239,8 +242,33 @@ public class Main extends JApplet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        
+		
+		FileWriter write3;
+		
+		// Lets rescale the vertex number.
+		int tab[] = new int[N*M];
+		int p=1;
+		for(String s: directedGraphH.vertexSet()){
+			tab[Integer.parseInt(s)]=p;
+			p=p+1;
+		}
+		
+		try {
+			write3 = new FileWriter("listColorToVFinal"+timeLog+".txt",true);
+			for (int k=0;k<listColorToVertexFinal.size();k++){
+				System.out.println("Color"+k);
+				for(String s : listColorToVertexFinal.get(k)){
+					write3.write(Integer.toString(tab[Integer.parseInt(s)])+" ");
+					System.out.print(Integer.toString(tab[Integer.parseInt(s)])+" ");
+				}
+				write3.write("\n");
+				System.out.println(" ");
+			}
+			write3.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         
 		
