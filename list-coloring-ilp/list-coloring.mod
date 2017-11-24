@@ -1,15 +1,15 @@
 /*
     Author: Benjamin Martin Seregi <seregi@kth.se>
 
-    Implementation of the ILP of the list coloring problem based on the paper of R. Wang, at al.:
+    An ILP implementation of the list coloring problem based on the paper of R. Wang, at al.:
     [1] R. Wang, C. Zhou, A. Mazumder, A. Das, H. A. Kierstead, and A. Sen, “Upper and lower bounds of
     choice number for successful channel assignment in cellular networks,” in 2015 IEEE International
     Conference on Communications (ICC), June 2015, pp. 3370–3375.
     Available: https://doi.org/10.1109/ICC.2015.7248845
 
     Modifications that I made:
-        - I merged condition (2) and (3), see below. It means that we have less inequalities.
-        - This is intended to use for the list coloring of 1-band buffering (not necessarily cellular) graphs, therefore
+        - I merged conditions (2) and (3), see below. Due to this, we have less inequalities.
+        - This is intended for the list coloring of 1-band buffering (not necessarily cellular) graphs, therefore
           the "2-hops constraint" has been omitted. Instead, we use a 1-hop constraint.
 
     How to run this? This program requires GLPK (https://www.gnu.org/software/glpk/) which is a free
