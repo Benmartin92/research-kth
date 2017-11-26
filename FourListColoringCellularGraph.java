@@ -48,16 +48,18 @@ public class FourListColoringCellularGraph {
 		int i=0;
 		for (String p : vertexSet){
 			List<String> listTemp = new ArrayList<String>();
+			List<String> listTempFixed = new ArrayList<String>();
 			for (int j=0; j<lengthSetofColors[i];j++){
 				//int colorAdded = minColor + (int)(Math.random() * ((maxColor - minColor) + 1));
 				//FOR NOW :
 				int colorAdded = j+1;
 				listTemp.add(Integer.toString(colorAdded));
+				listTempFixed.add(Integer.toString(colorAdded));
 				listColorToVertex.get(colorAdded-1).add(p);
 				
 			}
 			this.listVertexToColor.add(listTemp);
-			this.listVertexToColorFIXED.add(listTemp);
+			this.listVertexToColorFIXED.add(listTempFixed);
 			i=i+1;
 		}
 		
