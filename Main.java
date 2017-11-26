@@ -59,8 +59,8 @@ public class Main extends JApplet{
 	
 	public void init(){
 		
-		int N=10;//rows
-		int M=10;//columns
+		int N=6;//rows
+		int M=6;//columns
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 		//CellularGraphGenerator generatorCell = new CellularGraphGenerator(5);
@@ -246,7 +246,7 @@ public class Main extends JApplet{
 		FileWriter write3;
 		
 		// Lets rescale the vertex number.
-		int tab[] = new int[N*M];
+		int tab[] = new int[N*M+1];
 		int p=1;
 		for(String s: directedGraphH.vertexSet()){
 			tab[Integer.parseInt(s)]=p;
