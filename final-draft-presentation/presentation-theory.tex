@@ -24,8 +24,7 @@
 \setbeamertemplate{footline}{}
 \setbeamertemplate{navigation symbols}{}
 \title{On the list coloring of $1$-band buffering graphs}
-\subtitle{Introduction to the theory}
-\author{Benjámin Martin Seregi}
+\author{Benjámin Martin Seregi\\Marine Collery}
 \institute{
       %\includegraphics[scale=0.2]{elte_cimer_szines}%
       \\[\medskipamount]
@@ -67,7 +66,9 @@ Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L
 \justifying
 \begin{itemize}
 \item What is the smallest $k > 0$ such that a cellular graph is $k$-choosable (i.e. what is the choice number of cellular graphs)?
-\pause \item Can we construct a $k$-list coloring in polynomial time (where $k$ is close or equal to the choice number)?
+\pause \item How can we find an orientation in $G$ such that it is acyclic and $d^+(v) \leqslant 3$ for all $v \in V(G)$ in polynomial time of the size of $G$?
+\pause \item Does there exist a polynomial time algorithm that finds a kernel in the previously constructed graph?
+
 \end{itemize}
 \end{frame}
 
@@ -75,8 +76,9 @@ Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L
 \frametitle{Answers}
 \justifying
 \begin{itemize}
-\item If $G$ is cellular then $\ch(G) \leqslant 4$ (see Research plan, Appendix II)
-\pause \item There exists a polynomial time algorithm that constructs a $4$-list coloring for such graphs.
+\item If $G$ is cellular then $\ch(G) \leqslant 4$ (see Report,  Theorem 2.)
+\pause \item It is possible to construct a $3$-bounded acyclic orientation in polynomial time (see Report, Algorithm 1).
+\pause \item It is possible to find a kernel in a $3$-bounded acyclic graph in polynomial time (see Report, Algorithm 2).
 \end{itemize}
 \end{frame}
 
@@ -84,14 +86,15 @@ Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L
 \begin{frame}
 \frametitle{The algorithm}
 \justifying
-The algorithm is based on Galvin's theorem (IV. Hypothesis):
-\begin{theo}[Galvin, 1995] Let $G$ be a graph and $\lbrace L(v) : v \in V(G) \rbrace$ given color sets. If $G$ has an orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$ and every induced subgraph of $D$ has a kernel, then $G$ can be colored from the given color sets.
+The algorithm is based on Galvin's theorem (see Report, Theorem 1):
+\begin{theo}[Galvin's theorem for cellular graphs (see Report, Theorem 3)] Let $G$ be a graph and $\lbrace L(v) \mid v \in V(G) \rbrace$ given color sets. If $G$ has a kernel-perfect orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$, then $G$ can be colored from the given color sets.
+In particular, if $G$ is a cellular graph and $|L(v)| \geqslant 4$ for all $v \in V(G)$. Then $G$ can be colored from the given color sets.
 \end{theo}
 \pause Outline of the proof of our algorithm:
 \begin{itemize}
-\item If $G$ is cellular then it has a $3$-bounded acyclic orientation that can be computed in polynomial time (Research Plan, Appendix I).
-\pause \item Acyclic graphs are kernel-perfect and a kernel can be constructed in polynomial time (see my branch: final-report-theory, Research Plan VII. Research Methodology).
-\pause \item Apply Galvin's theorem.
+\item If $G$ is cellular then it has a $3$-bounded acyclic orientation that can be computed by Algorithm 1.
+\pause \item Acyclic graphs are kernel-perfect and a kernel can be constructed by Algorithm 2.
+\pause \item Apply mathematical induction on the number of nodes (which yields a proof and an algorithm at the same time).
 \end{itemize}
 \end{frame}
 
