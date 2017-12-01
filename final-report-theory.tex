@@ -278,20 +278,23 @@ It can be seen from the algorithm that first we call Algorithm \ref{alg:find-acy
 \section{Methods}
 
 Our method is analytical since the $1$-band buffering cellular topology can be easily modeled as a graph. In order to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible topologies that might arise in network deployments.
-//Project Plan
-
-
 
 \section{Results and Analysis}
 
+\textit{All the code referenced below is open source and available here: \texttt{https://github.com/Benmartin92 /research-kth}. \\\\}
+
 All those algorithms are implemented in Java in order to test their veracity. 
-The graph are displayed in a JApplet in order to visualize the coloring. 
-The cellular graphs are generated from a grid graph shown in /ref.
+The graph are displayed in a JApplet in order to visualize the coloring.
+The implementation is based on the JGraphT\cite{JGraphT} libraries, providing a graph structure.
+
+\subsection{Generation of Cellular Graph}
+The cellular graphs are generated from a grid graph shown in Fig.\ref{cellgraphgeneration}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{cellGeneration.png}
-\caption{Example of generation of a cellular graph.}
+\caption{Example of generation of ONE cell in a grid with N=5.}
+\label{cellgraphgeneration}
 \end{figure}
 
 \subsection{Cellular Graph - 4 colors and each are available for each node}
@@ -303,17 +306,41 @@ The first observation that we could make is that only 3 colors were used to colo
 \caption{Example of a part of cellular graph colored.}
 \end{figure}
 
+We then studied the running time of the algorithm compared to an IPL algorithm with those parameters and a variable size of the cellular graph.
+The running time of the ILP algorithm created by GLPK \cite{} is given in seconds when our measures are in nanoseconds.
+We can notice the exponential time required for the ILP algorithm compared to our polynomial one on Fig.\ref{4colors}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{4colorsRunTime.png}
+\caption{R studio result.}
+\label{4colors}
+\end{figure}
+
+
 \subsection{Cellular Graph - random numbers of colors available (higher than 4), each node has 4 possible colors}
 
+The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test. Indeed, the running time and its need in memory place of the ILP solution can be very high.
+Very few have been tested because the physical requirements for higher numbers of colors were not met.
+On Fig. \ref{20size} are represented some value were the ILP algorithm gave a solution in less than 2 minutes. We can see that when the ILP algorithm gives a fast solution our algorithm does too.
+No further conclusions can be made until we are able to generate more data especially for higher fixed sizes of the cellular graph.
+(When ILP would not give a solution fast enough, our algorithm would not be tested on it as no comparison could had been made. This is something that will be done shortly).
 
-TO DO
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{20sizeRunTime.png}
+\caption{R studio result for a fixed size of N=20 (cf.Fig.\ref{cellgraphgeneration})}
+\label{20size}
+\end{figure}
 
-
-\subsection{IPL}
-
-We have compared our results with the IPL algorithm and we have the same.
 
 \section{Discussion}
+
+We have proven that cellular graph are 4-colorable in theory and for now on examples tested in practice, and we have found that when only 4 colors are available cellular graph are also 3-colorable.
+We have also proven that the running time of our implementation depends on the size on the cellular graph for a given number of available colors but is lower than an ILP implementation especially for large cellular graph.
+Most of the work has been done comparing our algorithm to the GLPK\cite{GLPK} ILP algorithm proposed by GNU.
+The next step of this project will consist in comparing the coloration given by the ILP algorithm and ours. We have already noticed that there are exactly the same in simple case such as for the case A.
+However the results might be different when more colors are available.
 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
