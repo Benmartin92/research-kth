@@ -283,22 +283,20 @@ Our method is analytical since the $1$-band buffering cellular topology can be e
 
 \textit{All the code referenced below is open source and available here: \texttt{https://github.com/Benmartin92 /research-kth}. \\\\}
 
-All those algorithms are implemented in Java in order to test their veracity. 
-The graph are displayed in a JApplet in order to visualize the coloring.
-The implementation is based on the JGraphT\cite{JGraphT} libraries, providing a graph structure.
+The algorithms are implemented in Java in order to test their correctness. The graphs are displayed in a JApplet in order to visualize the coloring. The implementation is based on the JGraphT \cite{JGraphT} libraries which provides the graph data structures.
 
 \subsection{Generation of Cellular Graph}
-The cellular graphs are generated from a grid graph shown in Fig.\ref{cellgraphgeneration}.
+The cellular graphs are generated from a grid graph shown in Fig. \ref{cellgraphgeneration}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{cellGeneration.png}
-\caption{Example of generation of ONE cell in a grid with N=5.}
+\caption{Example of generation of one cell in a grid with $N=5$.}
 \label{cellgraphgeneration}
 \end{figure}
 
 \subsection{Cellular Graph - 4 colors and each are available for each node}
-The first observation that we could make is that only 3 colors were used to color a cellular graph with no restrictions.
+The first observation that we could make is that only $3$ colors were used to color a cellular graph with no restrictions.
 
 \begin{figure}[!h]
 \centering
@@ -306,9 +304,9 @@ The first observation that we could make is that only 3 colors were used to colo
 \caption{Example of a part of cellular graph colored.}
 \end{figure}
 
-We then studied the running time of the algorithm compared to an IPL algorithm with those parameters and a variable size of the cellular graph.
-The running time of the ILP algorithm created by GLPK \cite{} is given in seconds when our measures are in nanoseconds.
-We can notice the exponential time required for the ILP algorithm compared to our polynomial one on Fig.\ref{4colors}
+We then studied the running time of the algorithm compared to an integer linear program from \cite{7248845} with cellular graphs of variable sizes.
+The running time of the integer linear program solved by GLPK \cite{GLPK} is given in seconds while the running time of our implementation are in nanoseconds.
+We can notice the exponential time required for the integer linear program compared to our polynomial one on Fig. \ref{4colors}
 
 \begin{figure}[!h]
 \centering
@@ -320,27 +318,25 @@ We can notice the exponential time required for the ILP algorithm compared to ou
 
 \subsection{Cellular Graph - random numbers of colors available (higher than 4), each node has 4 possible colors}
 
-The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test. Indeed, the running time and its need in memory place of the ILP solution can be very high.
-Very few have been tested because the physical requirements for higher numbers of colors were not met.
-On Fig. \ref{20size} are represented some value were the ILP algorithm gave a solution in less than 2 minutes. We can see that when the ILP algorithm gives a fast solution our algorithm does too.
-No further conclusions can be made until we are able to generate more data especially for higher fixed sizes of the cellular graph.
-(When ILP would not give a solution fast enough, our algorithm would not be tested on it as no comparison could had been made. This is something that will be done shortly).
+The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test. However, the running time of the integer linear program and its need in memory can be very high.
+Cellular graphs with very few nodes have been tested because the physical requirements (CPU, memory) for higher numbers of nodes were not met.
+On Fig. \ref{20size} some value are represented where the integer linear program gave a solution in less than $2$ minutes. We can see that when the integer linear program gives a solution fast then so does our algorithm.
+No further conclusions can be made until we generate more data especially with larger cellular graphs.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{20sizeRunTime.png}
-\caption{R studio result for a fixed size of N=20 (cf.Fig.\ref{cellgraphgeneration})}
+\caption{R studio result for a fixed size of $N=20$ (cf.Fig.\ref{cellgraphgeneration})}
 \label{20size}
 \end{figure}
 
 
 \section{Discussion}
 
-We have proven that cellular graph are 4-colorable in theory and for now on examples tested in practice, and we have found that when only 4 colors are available cellular graph are also 3-colorable.
-We have also proven that the running time of our implementation depends on the size on the cellular graph for a given number of available colors but is lower than an ILP implementation especially for large cellular graph.
-Most of the work has been done comparing our algorithm to the GLPK\cite{GLPK} ILP algorithm proposed by GNU.
-The next step of this project will consist in comparing the coloration given by the ILP algorithm and ours. We have already noticed that there are exactly the same in simple case such as for the case A.
-However the results might be different when more colors are available.
+We have proven that cellular graph are 4-choosable and this proposition has been tested in practice. We found that when the same $4$ colors are available at each node, the algorithm has been colored the graph with only $3$ colors. This result verifies the fact that $1$-band buffering cellular graphs are $3$-colorable \cite{662943}.
+The test showed that the running time of our implementation depends on the size of the cellular graph and it is lower than the integer linear program implementation especially for large cellular graphs.
+Most of the work has been done comparing our algorithm to the integer linear program.
+The next step of this project is to run extensive simulations with both of the implementations and compare the results.
 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
