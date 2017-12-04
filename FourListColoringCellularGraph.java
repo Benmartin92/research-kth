@@ -34,7 +34,7 @@ public class FourListColoringCellularGraph {
 		}
 	}
 	
-	private void generateSetOfColors(Set<String> vertexSet){
+	public void generateSetOfColors(Set<String> vertexSet){
 		int minColor=1;
 		int maxColor=this.nbrColor;
 		
@@ -49,13 +49,26 @@ public class FourListColoringCellularGraph {
 		for (String p : vertexSet){
 			List<String> listTemp = new ArrayList<String>();
 			List<String> listTempFixed = new ArrayList<String>();
+			List<Integer> possibleColors = new ArrayList<Integer>();
 			for (int j=0; j<lengthSetofColors[i];j++){
-				//int colorAdded = minColor + (int)(Math.random() * ((maxColor - minColor) + 1));
+				possibleColors.add(j+1);
+			}
+			for (int j=0; j<lengthSetofColors[i];j++){
+				int colorToBeAdded = minColor + (int)(Math.random() * ((maxColor - minColor) + 1));
+				while(listTemp.contains(Integer.toString(colorToBeAdded))){
+					colorToBeAdded = minColor + (int)(Math.random() * ((maxColor - minColor) + 1));
+					//this loop is finite because lengthSetofColors[i].size() is defined by the number of colors available.
+				}
+				
+				/*int index = (int)(Math.random() * (possibleColors.size() + 1));
+				
+				int colorToBeAdded = possibleColors.remove(index);*/
+				
 				//FOR NOW :
-				int colorAdded = j+1;
-				listTemp.add(Integer.toString(colorAdded));
-				listTempFixed.add(Integer.toString(colorAdded));
-				listColorToVertex.get(colorAdded-1).add(p);
+				//int colorToBeAdded = j+1;
+				listTemp.add(Integer.toString(colorToBeAdded));
+				listTempFixed.add(Integer.toString(colorToBeAdded));
+				listColorToVertex.get(colorToBeAdded-1).add(p);
 				
 			}
 			this.listVertexToColor.add(listTemp);
@@ -71,12 +84,24 @@ public class FourListColoringCellularGraph {
 	public List<List<String>> computeColoring(){
 		generateSetOfColors(directedGraphH.vertexSet());
 		
-		
 				
 		//for (int i=0; i<directedGraphH.vertexSet().size();i++){
 		int i=0;
 		while (directedGraphH.vertexSet().size() !=0){
-			int colorAlpha = Integer.parseInt(this.listVertexToColor.get(i).get(0)); // we assume that there is always a possible color.
+			for (String s : this.directedGraphH.vertexSet()){
+				i=Integer.parseInt(s)-1;
+				break;
+			}
+			int colorAlpha;
+			if (!this.listVertexToColor.get(i).isEmpty())
+				colorAlpha = Integer.parseInt(this.listVertexToColor.get(i).get(0)); // we assume that there is always a possible color.
+			else{
+				colorAlpha =-1;
+				System.out.println("This error is never supposed to be called. Vertex considered: "+i);
+			}
+				
+			
+				
 			Set<String> subVertexSet = new HashSet<String>();
 
 			for (int j =0; j<this.listColorToVertex.get(colorAlpha-1).size(); j++){
@@ -119,7 +144,7 @@ public class FourListColoringCellularGraph {
 				this.listVertexToColor.get(k).remove(Integer.toString(colorAlpha));
 			}
 			//System.out.println("Nbr of nodes not colored "+directedGraphH.vertexSet().size());
-			i=i+1;
+			//i=i+1;
 		}
 		
 		return this.listColorToVertexFinal;
