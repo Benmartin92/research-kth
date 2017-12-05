@@ -44,6 +44,8 @@ if [[ $nbrColor -eq 4 ]]; then
 fi
 
 if [[ $N -eq 40 ]]; then
+	echo "${timeInSec}; ${nbrColor}"
+	echo "${timeInNano}; ${nbrColor}"
 	echo "${timeInSec}; ${nbrColor}" >> timeColor40_ILP.txt
 	echo "${timeInNano}; ${nbrColor}" >> timeColor40.txt
 fi

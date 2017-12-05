@@ -146,9 +146,9 @@ int main(int argc, char *argv[]) {
 
         std::cout << "Compare coloring..." << std::endl;
         if (compareColoring(coloring, coloringILP))
-            std::cout << "DIFFERENT" << std::endl;
+            std::cout << "Result: DIFFERENT" << std::endl;
         else
-            std::cout << "SAME" << std::endl;
+            std::cout << "Result: SAME" << std::endl;
         return 0;
     }
     else {
