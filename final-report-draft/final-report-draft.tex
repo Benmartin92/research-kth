@@ -81,6 +81,7 @@ On the list coloring of 1-band buffering cellular graphs
 
 \begin{abstract}
 The optimal channel allocation problem in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we show that there exists a polynomial time algorithm for 1-band buffering callular graphs; and as a corollary it turns out the choice number of such a graphs is at most 4. In addition, we carry out performance comparisons between the existing integer linear programming solution and our implementation.
+%%%%%% TODO Add statement about what the performance comparisons show. %%%%%% TODO
 \end{abstract}
 
 \begin{keywords}
@@ -89,26 +90,25 @@ channel allocation problem, cellular graph, list-coloring, choice number
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-%Describe the background for chosen area that is going to be investigated. Write a short description of the area that is going to be %investigated. It is a brief description of the necessary background knowledge of the problem area and for carrying out the project.
-
+%% TODO Since the available ... fix this
 In telecommunication one of the most challenging problems is the efficient allocation of available frequency. Since the available bandwidth is usually limited (and expensive), the efficient utilization of the frequency spectrum is a major concern. Due to the growing number of mobile Internet users, the optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
 
 Several variants of the channel allocation problem have been defined based on the different channel constraints that a particular service might require. One of them is the so-called co-channel constraint where the same channel is not allowed to be assigned to neighboring cells simultaneously. This problem has been formalized as a graph coloring problem by many authors \cite{1456167}. Unfortunately, graph coloring is a well-known NP-complete problem \cite{Kar72} and therefore we do not know if a polynomial time algorithm for co-channel constraint satisfaction exists. Therefore various heuristic algorithms have been developed, the list of methods includes genetic algorithms, neural networks, graph-based, and other approaches \cite{Audhya:2011:SCA:1988563.1988571}.
 
-Cellular network topologies are usually idealized as a certain geometric structure. The most common network structure is the hexagonal grid topology where each cell is represented by a regular hexagon (two cells are neighbors if they share a common boundary). In \cite{662943}, Sen, Roxborough, and Medidi exploited this special structure and proposed an algorithm that optimally solves the channel allocation problem in $k$-band buffering systems where $k=1,2$. Moreover, the algorithm has polynomial running time $O(p)$ where $p$ is the number of cells.
+Cellular network topologies are usually idealized as a certain geometric structure. The most common network structure is the hexagonal grid topology where each cell is represented by a regular hexagon (two cells are neighbors if they share a common boundary). In \cite{662943}, Sen, Roxborough, and Medidi exploited this special structure and proposed an algorithm that optimally solves the channel allocation problem in $k$-band buffering systems where $k$ is $1$ or $2$. Moreover, the algorithm has polynomial running time $O(p)$ where $p$ is the number of cells.
 
-R. Wang, at al. \cite{7248845} introduced a \textit{distinctly different} CAP from all the above mentioned problems, by assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called a cellular graph) where each cell has a fixed number of frequency channel (channels are either busy or free). They asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is an integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), while the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
+R. Wang, et al. \cite{7248845} introduced a \textit{distinctly different} channel allocation problem from all the above mentioned problems, by assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called a cellular graph) where each cell has a fixed number of frequency channels (channels are either busy or free). They asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is an integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), while the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
 
 In Section \ref{sec:theoretical-framework}, we introduce the basic terms and notions that are required to understand the theory, this allows us to describe the problem in a graph theoretic setting in Section \ref{sec:problem-questions}. Our main goal is to reformulate the above-mentioned problem for \textit{$1$-band buffering cellular graphs}. Section \ref{sec:orientation} studies how to find an acyclic orientation of cellular graphs such that the indegree of the nodes are below some upper bound. In addition, we prove that this can be done in polynomial time. In Section \ref{sec:4-choosable}, we prove that cellular graphs are $4$-choosable. Section \ref{sec:dag} investigates how to find kernels in directed acyclic graphs in polynomial time. Section \ref{sec:4-list-coloring} combines all of the results of the previous sections and gives a polynomial time algorithm that constructs a $4$-list coloring of a cellular graph.
 
 \section{Theoretical Framework}\label{sec:theoretical-framework}
 In this section we introduce the basic notions and definitions that is essential to formulate the problem in a graph-theoretic setting.
-\begin{defi} A graph $G$ is a  \textit{cellular graph} if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
+\begin{defi} A graph $G$ is a  \textit{cellular graph} (see Fig. \ref{fig:cellular-graph}) if it is constructed from the hexagonal cell topology in the following way: each cell is a node and two nodes are connected if and only if they share a common boundary.
 \end{defi}
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{cellular_graph.png}
-\caption{An example of a cellular graph}\label{table:assignment}
+\caption{An example of a cellular graph}\label{fig:cellular-graph}
 \end{figure}
 \begin{defi} A cellular network is $k$\textit{-band buffering} if the interference extends up to $k$ cells.
 \end{defi}
@@ -198,7 +198,7 @@ It is enough to prove that "Select $v \in V(G^i)$ such that $\deg(v) \leqslant 3
 It is important to note that the idea of Algorithm \ref{alg:find-acyclic-bounded-orientation} came from \cite{CHROBAK1991243} where the authors proved that every planar graph has a $5$-bounded acyclic orientation. They used the fact that every planar graph has a node with at most $5$ neighbors which follows from Euler's formula.
 \section{Cellular graphs are $4$-choosable}\label{sec:4-choosable}
 
-We are about to prove one of our main results, that is, cellular graphs are $4$-choosable. We would like to note that since $G$ is a planar, it follows from Thomassen's theorem \cite{Thomassen:1994:PG:184180.184192} that it is $5$-choosable. It is worth noting that cellular graphs are $3$-colorable \cite{662943} (Theorem 1). However, even with this additional constraint, we still cannot say that if $G$ is planar and $3$-colorable then it is $4$-choosable as a counterexample can be found in \cite{JGT:JGT4}. The counterexample is quite interesting (second figure) as it is constructed from a cellular graph however, the author added one extra node and joined it to all of the outer nodes. Due to this step, the resulting graph does not always contain a node of degree $3$ therefore the property of Lemma \ref{lem:degree-constraint} is not true for this construction.
+We are about to prove one of our main results, that is, cellular graphs are $4$-choosable. We would like to note that since $G$ is a planar, it follows from Thomassen's theorem \cite{Thomassen:1994:PG:184180.184192} that it is $5$-choosable. It is worth noting that cellular graphs are $3$-colorable \cite{662943} (Theorem 1). However, even with this additional constraint, we still cannot say that if $G$ is planar and $3$-colorable then it is $4$-choosable as a counterexample can be found in \cite{JGT:JGT4}. The counterexample is quite interesting (\cite {JGT:JGT4}, second figure) as it is constructed from a cellular graph; however the author added one extra node and joined it to all of the outer nodes. Due to this step, the resulting graph does not always contain a node of degree $3$ therefore the property of Lemma \ref{lem:degree-constraint} is not true for this construction.
 
 Before proving our theorem we need to introduce the notion of kernel in graphs and a theorem from Galvin \cite{Galvin:1995:LCI:199352.199369} (non-multigraph version from \cite{citeulike:395714}, Lemma 5.4.3) that will play a central role in our study. The proof of the theorem is inductive and can be transformed into an algorithm.
 \begin{defi} Let $G$ be a directed graph. We say that an independent set $K \subseteq V(G)$ is a kernel of $G$ if it satisfies the following: for each node $u \in V(G) \setminus K$ there is a node $v \in K$ such that $(u,v) \in E(G)$.
@@ -215,10 +215,10 @@ If $G$ is a cellular graph then $\ch(G) \leqslant 4$.
 Since $G$ is cellular, we can consider its $3$-bounded acyclic orientation by Lemma \ref{lem:bounded-acyclic-orientation}. This orientation is kernel-perfect by Richardson's theorem \cite{richardson1946}. Therefore we can apply Theorem \ref{thm:galvin} (with $d^+(v) \leqslant 3$ and $L(v)=4$) which concludes the proof.
 \end{proof}
 
-We proved that cellular graphs are $4$-choosable what is left to show is that there exists an algorithm that constructs such colorings in polynomial time.
+We have proven that cellular graphs are $4$-choosable, hence what is left is to show that there exists an algorithm that constructs such colorings in polynomial time.
 \section{Finding a kernel in DAGs}\label{sec:dag}
 
-It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-complete \cite{chvatal}. However we will show that in DAGs (directed acyclic graphs) this problem can be easily solved in polynomial time. This is crucial as our $4$-list coloring algorithm has to construct kernels repeatedly during its running time.
+It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-complete \cite{chvatal}. However, we will show that in directed acyclic graphs (DAGs) this problem can be easily solved in polynomial time. This is crucial as our $4$-list coloring algorithm has to construct kernels repeatedly at run.
 
 \begin{lem}\label{lem:kernel-lemma} Let $G$ be a directed acyclic graph. Then a kernel $K \subseteq V(G)$ can be found in polynomial time.
 \end{lem}
@@ -244,11 +244,11 @@ It has been shown that finding a kernel in an arbitrary graph is $\mathrm{NP}$-c
  \caption{Finding a kernel in a DAG}
 \end{algorithm}
 
-We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025} therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$. We also note that an induced subgraph of a DAG is trivially a DAG therefore from Algorithm \ref{alg:find-kernel-in-dags} it follows that DAGs are kernel-perfect, that is, there is no need to apply Richardson's theorem in the proof of Theorem \ref{thm:choice-number}.
+We note that the topological order can be computed in linear time in the number of nodes and edges with Kahn's algorithm \cite{Kahn:1962:TSL:368996.369025}, therefore the running time of our algorithm is $O(|V(G)|+|E(G)|)$. We also note that an induced subgraph of a DAG is trivially a DAG, therefore from Algorithm \ref{alg:find-kernel-in-dags} it follows that DAGs are kernel-perfect, that is, there is no need to apply Richardson's theorem in the proof of Theorem \ref{thm:choice-number}.
 \section{$4$-list coloring of cellular graphs}\label{sec:4-list-coloring}
-Now we have everything to prove our main result and give a polynomial algorithm that computes a $4$-list coloring of a cellular graph. 
+Now we have everything necessary to prove our main result and give a polynomial algorithm that computes a $4$-list coloring of a cellular graph. 
 
-First we reformulate Galvin's theorem for cellular graphs and prove it (Theorem \ref{thm:galvin}), the proof is based on \cite{citeulike:395714} (Lemma 5.4.3). The original proof uses mathematical induction, we just repeat the same argument, fortunately the inductive step describes how to color the nodes, that is, the proof can be transformed into an algorithm. The cellular version, however, uses our result, namely Lemma \ref{lem:bounded-acyclic-orientation}. In addition, it also uses Lemma \ref{lem:kernel-lemma}. Then we prove that its (Algorithm \ref{alg:four-list-coloring}) running time is polynomial. Algorithm \ref{alg:four-list-coloring} uses Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags}. The fact that Algorithm \ref{alg:four-list-coloring} being polynomial will simply follow from the fact that Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags} are polynomial.
+First we reformulate Galvin's theorem for cellular graphs and prove it (Theorem \ref{thm:galvin}), the proof is based on \cite{citeulike:395714} (Lemma 5.4.3). The original proof uses mathematical induction, we just repeat the same argument, fortunately the inductive step describes how to color the nodes, that is, the proof can be transformed into an algorithm. The cellular version, however, uses our result, namely Lemma \ref{lem:bounded-acyclic-orientation}. In addition, it also uses Lemma \ref{lem:kernel-lemma}. Then we prove that its (Algorithm \ref{alg:four-list-coloring}) running time is polynomial. Algorithm \ref{alg:four-list-coloring} uses Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags}. The fact that Algorithm \ref{alg:four-list-coloring} is polynomial follows from the fact that Algorithm \ref{alg:find-acyclic-bounded-orientation} and Algorithm \ref{alg:find-kernel-in-dags} are polynomial.
 \begin{thm}[Galvin's theorem for cellular graphs] Let $G$ be a graph and $\lbrace L(v) \mid v \in V(G) \rbrace$ given color sets. If $G$ has a kernel-perfect orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$, then $G$ can be colored from the given color sets.
 In particular, if $G$ is a cellular graph and $|L(v)| \geqslant 4$ for all $v \in V(G)$. Then $G$ can be colored from the given color sets.
 \end{thm}
@@ -324,8 +324,8 @@ We can notice the exponential time required for the integer linear program compa
 \subsection{Cellular Graph - random numbers of colors available (higher than 4), each node has 4 possible colors}
 
 The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test. However, the running time of the integer linear program and its need in memory can be very high.
-Cellular graphs with very few nodes have been tested because the physical requirements (CPU, memory) for higher numbers of nodes were not met.
-On Fig. \ref{20size} some value are represented where the integer linear program gave a solution in less than $2$ minutes. We can see that when the integer linear program gives a solution fast then so does our algorithm.
+Cellular graphs with very few nodes have been tested because the physical requirements (CPU, memory) for higher numbers of nodes were not available.
+Fig. \ref{20size} shows some value where the integer linear program gave a solution in less than $2$ minutes. We can see that when the integer linear program gives a solution fast then so does our algorithm.
 No further conclusions can be made until we generate more data especially with larger cellular graphs.
 
 \begin{figure}[!h]
@@ -338,10 +338,10 @@ No further conclusions can be made until we generate more data especially with l
 
 \section{Discussion}
 
-We have proven that cellular graph are 4-choosable and this proposition has been tested in practice. We found that when the same $4$ colors are available at each node, the algorithm has been colored the graph with only $3$ colors. This result verifies the fact that $1$-band buffering cellular graphs are $3$-colorable \cite{662943}.
+We have proven that cellular graph are 4-choosable and this proposition has been tested in practice. We found that when the same $4$ colors are available at each node, the algorithm has colored the graph with only $3$ colors. This result verifies the fact that $1$-band buffering cellular graphs are $3$-colorable \cite{662943}.
 The test showed that the running time of our implementation depends on the size of the cellular graph and it is lower than the integer linear program implementation especially for large cellular graphs.
 Most of the work has been done comparing our algorithm to the integer linear program.
-The next step of this project is to run extensive simulations with both of the implementations and compare the results.
+The next step in this project is to run extensive simulations with both of the implementations and compare the results.
 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
