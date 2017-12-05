@@ -39,19 +39,27 @@ mdfColor_ILP <- read.csv("timeColor_ILP.txt",header=T,sep=';',stringsAsFactors =
 #summary(mdfN)
 #names(mdfColor)
 #summary(mdfColor)
+
+# conversion ns--> s
+ k<-0.000000001
+mdfN$time<-k*mdfN$time
+mdfColor$time<-k*mdfColor$time
 ```
 
 
 
 ```{r}
 #Plot timeN 
-plot(mdfN$N, mdfN$time, main="Running time in ns for 4 colors available (our implementation)")
-plot(mdfN_ILP$N, mdfN_ILP$time, main="Running time in s for 4 colors available (ILP)")
+plot(mdfN_ILP$N, mdfN_ILP$time, main="Running time in s for 4 colors available", pch=18, col="blue")
+points(mdfN$N, mdfN$time, pch=18, col="red")
 
+#Legend
+legend(x="topleft", legend=c("IPL","Our Implementation"), col=c("blue","red"), pch=c(15,15), lwd=c(0,0))
 
 #Plot timeColor 
-plot(mdfColor$color, mdfColor$time, main="Running time in ns for a fixed size of graph (our implementation)")
-plot(mdfColor_ILP$color, mdfColor_ILP$time, main="Running time in s a fixed size of graph (ILP)")
-
+plot(mdfColor_ILP$color, mdfColor_ILP$time, main="Running time in s a fixed size of graph", pch=18, col="blue")
+points(mdfColor$color, mdfColor$time, pch=18, col="red")
+#Legend
+legend(x="topright", legend=c("IPL","Our Implementation"), col=c("blue","red"), pch=c(15,15), lwd=c(0,0))
 
 ```
