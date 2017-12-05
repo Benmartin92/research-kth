@@ -1,19 +1,41 @@
 /**
  * 
  */
+//import java.awt.Color;
+import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.io.IOException;
 
+import javax.swing.JApplet;
+import javax.swing.JFrame;
+
 import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 
+import com.mxgraph.layout.mxFastOrganicLayout;
+import com.mxgraph.swing.mxGraphComponent;
+
+import junit.framework.Test;
+
+import org.jgrapht.DirectedGraph;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
+import org.jgrapht.ext.JGraphXAdapter;
 /**
  * @author Marine
  *
@@ -43,6 +65,7 @@ public class MainWithoutDisplay{
         
 
         MainWithoutDisplay applet = new MainWithoutDisplay();
+        
         applet.init();
         
         return;
@@ -54,7 +77,7 @@ public class MainWithoutDisplay{
 	public void init(){
 		
 		int N=testN;//rows
-		//int N=40;//rows
+		//int N=4;//rows
 		int M=N;//columns
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
@@ -64,7 +87,8 @@ public class MainWithoutDisplay{
 		long startTime1 = System.nanoTime();
 		ConstructionAcyclic constructor = new ConstructionAcyclic(undirectedGraph);
 		
-		
+
+        
 		//Acyclic Graph Construction
         DirectedAcyclicGraph<String, DefaultEdge> directedGraphH = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
 
@@ -73,7 +97,7 @@ public class MainWithoutDisplay{
         long breakTime1 = System.nanoTime();
 		
 		
-        
+		
         
         
 //        //Construction Kernel
@@ -99,8 +123,8 @@ public class MainWithoutDisplay{
 			System.out.println(nbrColor);
 		}
 		else{
-			nbrColor = 13;
-			//nbrColor = testNbrColors;
+			//nbrColor = 4;
+			nbrColor = testNbrColors;
 		}
 		
 		long breakTime2 = System.nanoTime();
@@ -122,7 +146,6 @@ public class MainWithoutDisplay{
 		
 		
 		
-		
 		long startTime3 = System.nanoTime();
 		FourListColoringCellularGraph fourListColoringAlgo = new FourListColoringCellularGraph(nbrColor,lengthSetofColors, directedGraphH);
 		
@@ -139,9 +162,11 @@ public class MainWithoutDisplay{
 		}
 		
 		
+        
 		
         int nbrVertex = directedGraphH.vertexSet().size();
         int[][] matrix = new int [nbrVertex][nbrVertex];
+        int[][] matrix2 = new int [nbrVertex][nbrVertex];
         
         DirectedAcyclicGraph<String, DefaultEdge> directedGraphH2 = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
         DirectedAcyclicGraph<String, DefaultEdge> directedGraphH3 = new DirectedAcyclicGraph<String, DefaultEdge>(DefaultEdge.class);
@@ -172,20 +197,43 @@ public class MainWithoutDisplay{
 			}
 			i=i+1;
 		}
+        
+        int i2=0;
+        for (String s : directedGraphH3.vertexSet()){
+        	int j=0;
+			for (String t : directedGraphH2.vertexSet()){
+				if (directedGraphH.containsEdge(s,t)){
+					matrix2[i2][j] = 1;
+				}
+				else {
+					matrix2[i2][j] = 0;
+				}
+				j=j+1;
+			}
+			i2=i2+1;
+		}
 
-        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        //String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        Instant timeLog = Instant.now();
+
         
         List<List<String>> list = fourListColoringAlgo.getListVertexToColorInitial();
         int [][] tabColors = new int [nbrVertex][nbrColor]; // nbr vertex | nbr colors
-        for (int i1=0; i1<nbrVertex; i1++){
+        //for (int i1=0; i1<list.size(); i1++){
+        int i3=0;
+        while (i3 < list.size()){
+        	while (list.get(i3).isEmpty()){
+				list.remove(i3);
+			}
 			for (int j=1; j<nbrColor+1; j++){
-				if (list.get(i1).contains(Integer.toString(j))){
-					tabColors[i1][j-1]=1;
+				if (list.get(i3).contains(Integer.toString(j))){
+					tabColors[i3][j-1]=1;
 				}
 				else{
-					tabColors[i1][j-1]=0;
+					tabColors[i3][j-1]=0;
 				}
 			}
+			i3++;
 		}
         
         
@@ -206,12 +254,14 @@ public class MainWithoutDisplay{
 			for (int i1 =0; i1<nbrVertex; i1++){
 				write.write(i1+1 + " ");
 				for (int j =0; j<nbrVertex; j++){
-					write.write(matrix[i1][j] + " ");
+					write.write(matrix2[i1][j] + " ");
+					System.out.print(matrix2[i1][j] + " ");
 				}
 				if (i1 != nbrVertex-1)
 					write.write("\n");
 				else 
 					write.write(";\n");
+				System.out.print(";\n");
 			}
 			write.write("\n");
 			

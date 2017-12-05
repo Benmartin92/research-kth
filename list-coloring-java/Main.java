@@ -17,6 +17,7 @@ import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.io.IOException;
 
 import javax.swing.JApplet;
@@ -88,7 +89,7 @@ public class Main extends JApplet{
 	public void init(){
 		
 		//int N=testN;//rows
-		int N=5;//rows
+		int N=4;//rows
 		int M=N;//columns
 		
 		UndirectedGraph <String, DefaultEdge> undirectedGraph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
@@ -350,19 +351,26 @@ public class Main extends JApplet{
 			i=i+1;
 		}
 
-        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        //String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        Instant timeLog = Instant.now();
         
         List<List<String>> list = fourListColoringAlgo.getListVertexToColorInitial();
         int [][] tabColors = new int [nbrVertex][nbrColor]; // nbr vertex | nbr colors
-        for (int i1=0; i1<nbrVertex; i1++){
+        //for (int i1=0; i1<list.size(); i1++){
+        int i3=0;
+        while (i3 < list.size()){
+        	while (list.get(i3).isEmpty()){
+				list.remove(i3);
+			}
 			for (int j=1; j<nbrColor+1; j++){
-				if (list.get(i1).contains(Integer.toString(j))){
-					tabColors[i1][j-1]=1;
+				if (list.get(i3).contains(Integer.toString(j))){
+					tabColors[i3][j-1]=1;
 				}
 				else{
-					tabColors[i1][j-1]=0;
+					tabColors[i3][j-1]=0;
 				}
 			}
+			i3++;
 		}
         
         

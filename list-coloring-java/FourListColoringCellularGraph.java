@@ -40,8 +40,9 @@ public class FourListColoringCellularGraph {
 		
 		for (int j=0; j<this.nbrColor;j++){
 			List<String> listTemp = new ArrayList<String>();
+			List<String> listTemp2 = new ArrayList<String>();
 			listColorToVertex.add(listTemp);
-			listColorToVertexFinal.add(listTemp);
+			listColorToVertexFinal.add(listTemp2);
 		}
 		
 		
@@ -54,8 +55,9 @@ public class FourListColoringCellularGraph {
 			
 			if (k != Integer.parseInt(p)){
 				while(k != Integer.parseInt(p)){
-					this.listVertexToColor.add(listTemp);
-					this.listVertexToColorFIXED.add(listTempFixed);
+					List<String> listEmpty = new ArrayList<String>();
+					this.listVertexToColor.add(listEmpty);
+					this.listVertexToColorFIXED.add(listEmpty);
 					k++;
 				}
 			}
@@ -145,6 +147,7 @@ public class FourListColoringCellularGraph {
 //			}
 //			System.out.println("\nEND color KERNEL");
 			
+			//Coloring the nodes in the kernel with coloralpha
 			for(String s:kernelSet){
 				this.listColorToVertexFinal.get(colorAlpha-1).add(s);
 				directedGraphH.removeVertex(s);
@@ -152,8 +155,11 @@ public class FourListColoringCellularGraph {
 					this.listColorToVertex.get(k).remove(s);
 				}
 			}
-			for (int k=0; k<directedGraphH.vertexSet().size();k++){
-				this.listVertexToColor.get(k).remove(Integer.toString(colorAlpha));
+			//Removing all coloralpha from all VertexToColor
+			for (int k=0; k<this.listVertexToColor.size();k++){
+				if (!this.listVertexToColor.get(k).isEmpty()){
+					this.listVertexToColor.get(k).remove(Integer.toString(colorAlpha));
+				}
 			}
 			//System.out.println("Nbr of nodes not colored "+directedGraphH.vertexSet().size());
 			//i=i+1;
