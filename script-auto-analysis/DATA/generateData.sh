@@ -1,12 +1,12 @@
 #!/bin/bash
 
-for (( N = 5; N < 20; N++ )); do
-	java -jar test.jar $N 4
+for (( N = 4; N < 40; N++ )); do
+	java -jar ComputeColorationWithOutDisplay.jar $N 4
 done
 
 
-for (( C = 4; C < 20; C++ )); do
-	java -jar test.jar 20 $C
+for (( C = 4; C < 40; C++ )); do
+	java -jar ComputeColorationWithOutDisplay.jar 40 $C
 done
 
 
@@ -18,9 +18,9 @@ do
   		echo "wrong"
 		ext=${file:12} 
 
-		mkdir wrong
+		# mkdir wrong
 		filesToMove=`find . -maxdepth 1 -type f -name "*${ext}"`
-		echo ${filesToMove}
+		# echo ${filesToMove}
 		for line in $filesToMove ; do
   			mv $line wrong
   		done
