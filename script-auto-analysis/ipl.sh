@@ -43,9 +43,9 @@ if [[ $nbrColor -eq 4 ]]; then
 	echo "${timeInNano}; ${N}" >> timeN.txt
 fi
 
-if [[ $N -eq 20 ]]; then
-	echo "${timeInSec}; ${nbrColor}" >> timeColor_ILP.txt
-	echo "${timeInNano}; ${nbrColor}" >> timeColor.txt
+if [[ $N -eq 40 ]]; then
+	echo "${timeInSec}; ${nbrColor}" >> timeColor40_ILP.txt
+	echo "${timeInNano}; ${nbrColor}" >> timeColor40.txt
 fi
 
 
@@ -58,3 +58,4 @@ lig2=$((${nbrLines}-1))
 sed -n ${lig1},${lig2}p temp.txt > ./ILP/listColorToVFinal${ext}_ILP.txt
 
 rm temp.txt
+rm ./MOD/res-${actual_date}.mod
