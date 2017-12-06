@@ -291,7 +291,7 @@ Our method is analytical since the $1$-band buffering cellular topology can be e
 The algorithms are implemented in Java in order to test their correctness. The graphs are displayed in a JApplet in order to visualize the coloring. The implementation is based on the JGraphT \cite{JGraphT} libraries which provides the graph data structures.
 
 \subsection{Generation of Cellular Graph}
-The cellular graphs are generated from a grid graph shown in Fig. \ref{cellgraphgeneration}.
+The cellular graphs are generated from a grid graph as shown in Fig. \ref{cellgraphgeneration}.
 
 \begin{figure}[!h]
 \centering
@@ -310,7 +310,7 @@ The first observation that we could make is that only $3$ colors were used to co
 \end{figure}
 
 We then studied the running time of the algorithm compared to an integer linear program from \cite{7248845} with cellular graphs of variable sizes.
-The running time of the integer linear program solved by GLPK \cite{GLPK} is given in seconds while the running time of our implementation are in nanoseconds.
+The running time of the integer linear program solved by GLPK \cite{GLPK} is given in seconds while the running time of our implementation are in nanoseconds. Given the precision of the running time of the GLPK\cite{GLPK} a logarithmic representation is impossible (0s values).
 We can notice the exponential time required for the integer linear program compared to our polynomial one on Fig. \ref{4colors}
 
 \begin{figure}[!h]
@@ -321,20 +321,24 @@ We can notice the exponential time required for the integer linear program compa
 \end{figure}
 
 
-\subsection{Cellular Graph - random numbers of colors available (higher than 4), each node has 4 possible colors}
+\subsection{Cellular Graph - variable numbers of colors available (higher than 4), each node has 4 possible colors}
 
-The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test. However, the running time of the integer linear program and its need in memory can be very high.
-Cellular graphs with very few nodes have been tested because the physical requirements (CPU, memory) for higher numbers of nodes were not available.
+The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test because of the machine capacity. Indeed, the running time of the integer linear program and its need in memory can be very high.
+We have compared the running time depending on the number of colors available for a cellular graph of size N=40.
+The 
 Fig. \ref{20size} shows some value where the integer linear program gave a solution in less than $2$ minutes. We can see that when the integer linear program gives a solution fast then so does our algorithm.
 No further conclusions can be made until we generate more data especially with larger cellular graphs.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.4]{20sizeRunTime.png}
-\caption{R studio result for a fixed size of $N=20$ (cf.Fig.\ref{cellgraphgeneration})}
+\includegraphics[scale=0.4]{40SizeRunTime.png}
+\caption{R studio result for a fixed size of $N=40$ (cf.Fig.\ref{cellgraphgeneration})}
 \label{20size}
 \end{figure}
 
+\subsection{Cellular Graph - Generated Coloration}
+By interest, we decided to compare the actual coloration of the same graph by the two methods. Obvisously most of time both coloration were different. However, for in the first case (4 colors available and each are available for each node) the coloration was exactly the same. A further work could be to prove that there is one unique solution in this case for cellular graph 4-coloration.
+The scripts generated can be found in the git repository.
 
 \section{Discussion}
 
