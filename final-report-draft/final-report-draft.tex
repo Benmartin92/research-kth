@@ -71,13 +71,17 @@ On the list coloring of 1-band buffering cellular graphs
 \thanks{$^{2}$ student of Research Methodology and Scientific Writing Course at KTH Kista P1P22017. e-mail: seregi@kth.se}%
 }
 
+\fancypagestyle{firstpage}{%
+    \fancyhf{}
+	\chead{KTH Royal Institute of Technology | II2202, Fall 2017, Period 1-2 | \today}
+	\cfoot{\thepage}
+}
+
 \begin{document}
-
-
 \maketitle
-\thispagestyle{fancy}
-\fancyhf{}
-\chead{KTH Royal Institute of Technology | II2202, Fall 2017, Period 1-2 | \today}
+\thispagestyle{firstpage}
+\pagestyle{plain}
+\cfoot{\thepage}
 
 \begin{abstract}
 The optimal channel allocation problem in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we show that there exists a polynomial time algorithm for 1-band buffering cellular graphs; and as a corollary, it turns out the choice number of such a graphs is at most 4. In addition, we carry out performance comparisons between the existing integer linear programming solution and our implementation. The experiments show that our algorithm is significantly faster than the integer linear programming solution.
