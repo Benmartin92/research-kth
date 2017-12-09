@@ -97,7 +97,7 @@ Cellular network topologies are usually idealized as a certain geometric structu
 
 R. Wang, et al. \cite{7248845} introduced a \textit{distinctly different} channel allocation problem from all the above mentioned problems, by assuming a $2$-band buffering hexagonal cell topology (the interference graph created from this topology is called a cellular graph) where each cell has a fixed number of frequency channels (channels are either busy or free). They asked the following question: "\textit{What is smallest size of the set of free channels associated with the cells (nodes of the cellular graph) that can guarantee interference free channel assignment to all the nodes?}". This problem is related to one of the generalizations of the graph coloring problem, called list coloring. It turned out that the required number of free channels is between $8$ and $10$. In addition, two algorithms have been proposed to create an interference free assignment, that is, a list-coloring of the cellular graph. The first one is an integer linear programming formulation of the list coloring problem (and therefore it is not a polynomial algorithm), while the second one is a heuristic linear time algorithm that is, according to their experiment, within 12\% of the optimal solutions.
 
-In Section \ref{sec:theoretical-framework}, we introduce the basic terms and notions that are required to understand the theory, this allows us to describe the problem in a graph theoretic setting in Section \ref{sec:problem-questions}. Our main goal is to reformulate the above-mentioned problem for \textit{$1$-band buffering cellular graphs}. Section \ref{sec:orientation} studies how to find an acyclic orientation of cellular graphs such that the indegree of the nodes are below some upper bound. In addition, we prove that this can be done in polynomial time. In Section \ref{sec:4-choosable}, we prove that cellular graphs are $4$-choosable. Section \ref{sec:dag} investigates how to find kernels in directed acyclic graphs in polynomial time. Section \ref{sec:4-list-coloring} combines all of the results of the previous sections and gives a polynomial time algorithm that constructs a $4$-list coloring of a cellular graph.
+In Section \ref{sec:theoretical-framework}, we introduce the basic terms and notions that are required to understand the theory, this allows us to describe the problem in a graph theoretic setting in Section \ref{sec:problem-questions}. Our main goal is to reformulate the above-mentioned problem for \textit{$1$-band buffering cellular graphs}. Section \ref{sec:orientation} studies how to find an acyclic orientation of cellular graphs such that the indegree of the nodes are below some upper bound. In addition, we prove that this can be done in polynomial time. In Section \ref{sec:4-choosable}, we prove that cellular graphs are $4$-choosable. Section \ref{sec:dag} investigates how to find kernels in directed acyclic graphs in polynomial time. Section \ref{sec:4-list-coloring} combines all of the results of the previous sections and gives a polynomial time algorithm that constructs a $4$-list coloring of a cellular graph. Section \ref{sec:method} describes our research methodology. Section \ref{sec:results-analysis} documents our results on the performance comparisons between the two implementations. Finally, we close this paper with our final comments in Section \ref{sec:disc}.
 
 \section{Theoretical Framework}\label{sec:theoretical-framework}
 In this section we introduce the basic notions and definitions that is essential to formulate the problem in a graph-theoretic setting.
@@ -278,11 +278,11 @@ In each iteration, we color the nodes in $U$ and remove one color. The color is 
 \end{lem}
 \begin{proof} To obtain a contradiction, let us suppose that there is a node $v$ that is not colored and it does not have an available color ($|L(v)|=0$). This means that $v$ was in $V_{\alpha}$ for at least $4$ different colors and it was never in the kernel. However, this would mean that $d^+(v) \geqslant 4$ as $v$ sent an edge to each kernel. This is impossible since $G$ is $3$-bounded.
 \end{proof}
-\section{Methods}
+\section{Methods}\label{sec:method}
 
 Our method is analytical since the $1$-band buffering cellular topology can be easily modeled as a graph. In order to prove that our solution is optimal and fast we cannot use empirical methods as it would not cover all the possible topologies that might arise in network deployments.
 
-\section{Results and Analysis}
+\section{Results and Analysis}\label{sec:results-analysis}
 
 \textit{All the code referenced below is open source and available here: \texttt{https://github.com/Benmartin92 /research-kth}. \\\\}
 
@@ -330,7 +330,7 @@ We have compared the running time depending on the number of colors (channels) a
 \label{20size}
 \end{figure}
 
-\section{Discussion}
+\section{Discussion}\label{sec:disc}
 
 We have proven that cellular graph are 4-choosable and this proposition has been tested in practice. We found that when the same $4$ colors are available at each node, the algorithm has colored the graph with only $3$ colors. This result verifies the fact that $1$-band buffering cellular graphs are $3$-colorable \cite{662943}.
 The test showed that the running time of our implementation depends on the size of the cellular graph and it is lower than the integer linear program implementation especially for large cellular graphs. Moreover, we verified each coloring with a simple tool that reads an adjacency matrix and the coloring and then it verifies if there are no adjacent nodes that share the same color. The colorings were always proper.
