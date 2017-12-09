@@ -80,8 +80,7 @@ On the list coloring of 1-band buffering cellular graphs
 \chead{KTH Royal Institute of Technology | II2202, Fall 2017, Period 1-2 | \today}
 
 \begin{abstract}
-The optimal channel allocation problem in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we show that there exists a polynomial time algorithm for 1-band buffering callular graphs; and as a corollary it turns out the choice number of such a graphs is at most 4. In addition, we carry out performance comparisons between the existing integer linear programming solution and our implementation.
-%%%%%% TODO Add statement about what the performance comparisons show. %%%%%% TODO
+The optimal channel allocation problem in cellular networks is often formulated in a graph theoretic framework. One of its variants\---where each access point knows the list of its free channels\---is related the so-called list coloring problem. In spite of the fact that the list coloring problem is NP-complete for arbitrary graphs, we show that there exists a polynomial time algorithm for 1-band buffering callular graphs; and as a corollary it turns out the choice number of such a graphs is at most 4. In addition, we carry out performance comparisons between the existing integer linear programming solution and our implementation. The experiments show that our algorithm is significantly faster then the integer linear programming solution.
 \end{abstract}
 
 \begin{keywords}
@@ -90,7 +89,7 @@ channel allocation problem, cellular graph, list-coloring, choice number
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-In telecommunication one of the most challenging problems is the efficient allocation of available frequency. When the available bandwidth is limited, the efficient utilization of the frequency spectrum is a major concern. Due to the growing number of mobile Internet users, the optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
+In telecommunication one of the most challenging problems is the efficient allocation of available frequency. When the available bandwidth is limited, the efficient utilization of the frequency spectrum is a major concern. Due to the growing number of mobile Internet users, optimal channel allocation in cellular networks and their variants have been heavily researched in recent years \cite{Audhya:2011:SCA:1988563.1988571}.
 
 Several variants of the channel allocation problem have been defined based on the different channel constraints that a particular service might require. One of them is the so-called co-channel constraint where the same channel is not allowed to be assigned to neighboring cells simultaneously. This problem has been formalized as a graph coloring problem by many authors \cite{1456167}. Unfortunately, graph coloring is a well-known NP-complete problem \cite{Kar72} and therefore we do not know if a polynomial time algorithm for co-channel constraint satisfaction exists. Therefore various heuristic algorithms have been developed, the list of methods includes genetic algorithms, neural networks, graph-based, and other approaches \cite{Audhya:2011:SCA:1988563.1988571}.
 
@@ -287,7 +286,7 @@ Our method is analytical since the $1$-band buffering cellular topology can be e
 
 \textit{All the code referenced below is open source and available here: \texttt{https://github.com/Benmartin92 /research-kth}. \\\\}
 
-The algorithms are implemented in Java in order to test their correctness. The graphs are displayed in a JApplet in order to visualize the coloring. The implementation is based on the JGraphT \cite{JGraphT} libraries which provides the graph data structures.
+The algorithms are implemented in Java in order to test their correctness. The graphs are displayed in a JApplet in order to visualize the coloring. The implementation is based on the JGraphT \cite{JGraphT} library which provides the graph data structures.
 
 \subsection{Generation of Cellular Graph}
 The cellular graphs are generated from a grid graph as shown in Fig. \ref{cellgraphgeneration}.
@@ -300,51 +299,41 @@ The cellular graphs are generated from a grid graph as shown in Fig. \ref{cellgr
 \end{figure}
 
 \subsection{Cellular Graph - 4 colors and each are available for each node}
-The first observation that we could make is that only $3$ colors were used to color a cellular graph with no restrictions.
-
+In this case, the same $4$ colors were available at each node. Our first observation was that only $3$ colors were used to color the graph. This result is not surprising and coincide with \cite{662943} (Theorem 1) where it has been proved that the usual chromatic number of a cellular graph is $3$. We would like to note that for any $G$, the trivial inequality $\chi(G) \leqslant \ch(G)$ holds.
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{3colors.png}
-\caption{Example of a part of cellular graph colored.}
+\caption{Example of a part of a colored cellular graph}
 \end{figure}
 
-We then studied the running time of the algorithm compared to an integer linear program from \cite{7248845} with cellular graphs of variable sizes.
-The running time of the integer linear program solved by GLPK \cite{GLPK} is given in seconds while the running time of our implementation are in nanoseconds. Given the precision of the running time of the GLPK\cite{GLPK} a logarithmic representation is impossible (0s values).
-We can notice the exponential time required for the integer linear program compared to our polynomial one on Fig. \ref{4colors}
+We studied the running time of the algorithm compared to an integer linear program from \cite{7248845} with cellular graphs of variable sizes.
+The integer linear program has been solved by GLPK \cite{GLPK}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{4colorsRunTime.png}
-\caption{R studio result.}
+\caption{Results when the same $4$ colors were available at each node}
 \label{4colors}
 \end{figure}
 
 
-\subsection{Cellular Graph - variable numbers of colors available (higher than 4), each node has 4 possible colors}
+\subsection{Cellular Graph - each node has 4 randomly generated colors}
 
-The fact that the running time depends on the number of colors available for a fixed size of cellular graph is though to test because of the machine capacity. Indeed, the running time of the integer linear program and its need in memory can be very high.
-We have compared the running time depending on the number of colors available for a cellular graph of size N=40.
-The 
-Fig. \ref{20size} shows some value where the integer linear program gave a solution in less than $2$ minutes. We can see that when the integer linear program gives a solution fast then so does our algorithm.
-No further conclusions can be made until we generate more data especially with larger cellular graphs.
+With this scenario we wanted to simulate the case when the number of channels in the system is higher than $4$, however the number of free channels at each node is exactly $4$. According to Theorem \ref{thm:choice-number} this should be enough to create an interference-free channel allocation and Algorithm \ref{alg:four-list-coloring} finds it. We would like to note we do not know whether it is enough to have less than $4$ colors at each node. However, from the usual chromatic number, it follows that at least $3$ colors is necessary. It would be interesting to see a counterexample with lists of size $3$. In this case, it would follow that $\ch(G)=4$ otherwise, if no such a counterexample exists, we would have $\ch(G) = \chi(G)=3$.
+
+We have compared the running time depending on the number of colors (channels) available for grids of size $N=40$. Fig. \ref{20size} shows some value where the integer linear program gave a solution in less than $2$ minutes. We can see that when the integer linear program gives a solution fast then so does our algorithm.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.4]{40SizeRunTime.png}
-\caption{R studio result for a fixed size of $N=40$ (cf.Fig.\ref{cellgraphgeneration})}
+\caption{Results for a fixed size of $N=40$ and variable number of channels}
 \label{20size}
 \end{figure}
-
-\subsection{Cellular Graph - Generated Coloration}
-By interest, we decided to compare the actual coloration of the same graph by the two methods. Obvisously most of time both coloration were different. However, for in the first case (4 colors available and each are available for each node) the coloration was exactly the same. A further work could be to prove that there is one unique solution in this case for cellular graph 4-coloration.
-The scripts generated can be found in the git repository.
 
 \section{Discussion}
 
 We have proven that cellular graph are 4-choosable and this proposition has been tested in practice. We found that when the same $4$ colors are available at each node, the algorithm has colored the graph with only $3$ colors. This result verifies the fact that $1$-band buffering cellular graphs are $3$-colorable \cite{662943}.
-The test showed that the running time of our implementation depends on the size of the cellular graph and it is lower than the integer linear program implementation especially for large cellular graphs.
-Most of the work has been done comparing our algorithm to the integer linear program.
-The next step in this project is to run extensive simulations with both of the implementations and compare the results.
+The test showed that the running time of our implementation depends on the size of the cellular graph and it is lower than the integer linear program implementation especially for large cellular graphs. Moreover, we verified each coloring with a simple tool that reads an adjacency matrix and the coloring and then it verifies if there are no adjacent nodes that share the same color. The colorings were always proper.
 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
