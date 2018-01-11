@@ -27,7 +27,7 @@
 \usepackage{mathrsfs}
 \usepackage{mathptm}
 \usepackage{physics}
-\usepackage{times}
+%\usepackage{times}
 \newtheorem{lem}{Lemma}[section]
 \newtheorem{theo}[lem]{Theorem}
 \newtheorem{defi}[lem]{Definition}
@@ -129,7 +129,7 @@ In particular, if $G$ is a cellular graph and $|L(v)| \geqslant 4$ for all $v \i
 \begin{frame}{Method used to solve the problem}
 
 \begin{itemize}
-  \item \textbf{analytical} method
+  \item \textbf{Analytical} method
   \item 1-band buffering cellular topology \textrightarrow{} easily modeled as a graph.
   \item Prove solution = optimal and fast\\
   \textrightarrow{} empirical methods : impossible 
@@ -137,6 +137,8 @@ In particular, if $G$ is a cellular graph and $|L(v)| \geqslant 4$ for all $v \i
 \end{itemize}
 
 \vskip 1cm
+
+\pause
 
 Testing:
 \begin{itemize}
@@ -164,8 +166,8 @@ Testing:
 \end{enumerate}
 
 \end{block}
-
 \textrightarrow{}  Generation of Colored Cellular Graphs
+\pause
 
 \begin{figure}
 \centering
@@ -174,6 +176,7 @@ Testing:
   \includegraphics[width=0.5\linewidth]{cellGeneration.png}
   \caption{Cellular Graph generated from Grid}
 \end{minipage}%
+\pause
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=0.65\linewidth]{3colors.png}
@@ -197,10 +200,10 @@ Testing:
 \end{itemize}
  
 \end{block}
-
+\pause
 Generation of numerous amount of data \textrightarrow{} Space \& Time limit\\
-\textrightarrow{}  Bash Scripts to \textbf{generate}, \textbf{verify}, \textbf{compare} and \textbf{save}\\
-\textrightarrow{}  Analysis of the quantitative data in R Studio
+\pause \textrightarrow{}  Bash Scripts to \textbf{generate}, \textbf{verify}, \textbf{compare} and \textbf{save}\\
+\pause \textrightarrow{}  Analysis of the quantitative data in R Studio
 
 % \begin{figure}
 % \includegraphics[width=0.8\linewidth]{40SizeRunTime.png}
@@ -237,7 +240,10 @@ Generation of numerous amount of data \textrightarrow{} Space \& Time limit\\
 \end{itemize}
  
 \end{block}
+
 \vskip 1cm
+\pause
+
 \begin{block}{}
 
 \begin{itemize}
@@ -257,6 +263,7 @@ Generation of numerous amount of data \textrightarrow{} Space \& Time limit\\
 
 \begin{itemize}
   \item Extending the results to $k > 1$.
+  \vskip 1cm
   \item Local graph algorithms.
 \end{itemize}
 
