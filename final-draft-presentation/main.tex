@@ -20,7 +20,23 @@
 \usepackage{textcomp}
 \usepackage{caption}
 \usepackage[bottom]{footmisc}
-
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{mathptm}
+\usepackage{physics}
+\usepackage{times}
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{theo}[lem]{Theorem}
+\newtheorem{defi}[lem]{Definition}
+\newtheorem{megall}[lem]{Megállapodás}
+\newtheorem{allitas}[lem]{Proposition}
+\newtheorem{atfog}[lem]{Átfogalmazás}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator*{\ch}{ch}
 
 \title[Final Seminar]{On the list coloring of 1-band buffering graphs}
 \author{Marine Collery, Benjamin Martin Seregi}
@@ -43,17 +59,68 @@ II2202, Fall 2017, Period 1-2}
 
 \begin{frame}{Problem Statement}
 
-TO BE COMPLETED
-
+\justifying
+\begin{itemize}
+\item A graph $G$ is cellular if it is constructed from a hexagonal cellular topology and
+\pause \item we say that it is $1$-band buffering if the interference extends up to $1$ cell.
+\end{itemize}
+\pause \begin{defi}[$k$-choosability and $k$-list coloring]
+Let $G$ be a graph and $L(v)$ a set of colors for all $v \in V(G)$ such that $|L(v)|=k$. We say that $G$ is $k$\textit{-choosable} if $G$ is colorable such that the color of $v$ is in $L(v)$ for all $v \in V(G)$, such colorings called $k$\textit{-list coloring} of $G$.
+\pause
+\end{defi}
+\textbf{Problem:} How to color a graph from the lists $L(v)?$
 \end{frame}
 
 %------------------------------------------------
-\section{Background}
+\begin{frame}
+\frametitle{Why is it important to study this?}
+\justifying
+\begin{itemize}
+\item A $k$-list coloring of a cellular graph corresponds to an interference-free channel allocation where $L(v)$ is the list of free channels for the access point $v$.
+\pause \item Finding the optimal channel allocation is of great interest: with interference-free allocations it is possible to achieve higher throughput.
+\pause \item Channel allocation problem is $\mathrm{NP}$-complete in general.
+\end{itemize}
+\begin{figure}
+\caption{3-coloring of a cellular graph, $L(v):=\lbrace \text{PURPLE,YELLOW,BLUE} \rbrace.$}
+\includegraphics[scale=0.15]{3_coloring_cellular.png}
+\end{figure}
+\end{frame}
 
-\begin{frame}{Background and related work}
+\begin{frame}
+\frametitle{Research questions}
+\justifying
+\begin{itemize}
+\item What is the smallest $k > 0$ such that a cellular graph is $k$-choosable (i.e. what is the choice number of cellular graphs)?
+\pause \item How can we find an orientation in $G$ such that it is acyclic and $d^+(v) \leqslant 3$ for all $v \in V(G)$ in polynomial time of the size of $G$?
+\pause \item Does there exist a polynomial time algorithm that finds a kernel in the previously constructed graph?
 
-TO BE COMPLETED
+\end{itemize}
+\end{frame}
 
+\begin{frame}
+\frametitle{Answers}
+\justifying
+\begin{itemize}
+\item If $G$ is cellular then $\ch(G) \leqslant 4$ (see Report,  Theorem 2.)
+\pause \item It is possible to construct a $3$-bounded acyclic orientation in polynomial time (see Report, Algorithm 1).
+\pause \item It is possible to find a kernel in a $3$-bounded acyclic graph in polynomial time (see Report, Algorithm 2).
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The algorithm}
+\justifying
+The algorithm is based on Galvin's theorem (see Report, Theorem 1):
+\begin{theo}[Galvin's theorem for cellular graphs (see Report, Theorem 3)] Let $G$ be a graph and $\lbrace L(v) \mid v \in V(G) \rbrace$ given color sets. If $G$ has a kernel-perfect orientation $D$ such that $d^+(v) < |L(v)|$ for all $v \in V(D)$, then $G$ can be colored from the given color sets.
+In particular, if $G$ is a cellular graph and $|L(v)| \geqslant 4$ for all $v \in V(G)$. Then $G$ can be colored from the given color sets.
+\end{theo}
+\pause Outline of the proof of our algorithm:
+\begin{itemize}
+\item If $G$ is cellular then it has a $3$-bounded acyclic orientation that can be computed by Algorithm 1.
+\pause \item Acyclic graphs are kernel-perfect and a kernel can be constructed by Algorithm 2.
+\pause \item Apply mathematical induction on the number of nodes (which yields a proof and an algorithm at the same time).
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -189,15 +256,9 @@ Generation of numerous amount of data \textrightarrow{} Space \& Time limit\\
 \begin{frame}{Future Work}
 
 \begin{itemize}
-  \item Your introduction goes here!
-  \item Use \texttt{itemize} to organize your main points.
+  \item Extending the results to $k > 1$.
+  \item Local graph algorithms.
 \end{itemize}
-
-\vskip 1cm
-
-\begin{block}{Examples}
-Some examples of commonly used commands and features are included, to help you get started.
-\end{block}
 
 \end{frame}
 
